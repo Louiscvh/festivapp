@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "festivapp": "apps/festivapp",
+    "festivapp-e2e": "apps/festivapp-e2e"
+  }
+}
