@@ -37,7 +37,7 @@ export default function Signin() {
                 alert(result)
             }
         } else {
-            alert('Les mots de passe ne correspondent pas')
+            alert('Les mots de passe ne correspondent pas') 
         }
     }
     return (
