@@ -10,11 +10,11 @@ const StyledPage = styled.div`
 `;
 
 export default function Signin() {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [birth, setBirth] = useState('');
-    const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [birth, setBirth] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const router = useRouter()
     const confirmedPass = useRef(null)
     const handleSignin = async(e: FormEvent) => {
