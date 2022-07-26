@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router'
 import { FormEvent, useState } from "react";
 import Container from "../components/Container";
-import Header from "../components/Header";
 import styled from 'styled-components';
 import Head from 'next/head';
 import { useCookies } from 'react-cookie';
+import { getLayout } from '../layouts/MenuLayout';
 
 const StyledPage = styled.div`
   
@@ -40,7 +40,6 @@ export default function Login() {
                 <title>Festivapp - Connexion</title>
             </Head>
             <StyledPage>
-                <Header />
                 <Container>
                     <main>
                         <h1>Connexion</h1>
@@ -55,3 +54,5 @@ export default function Login() {
         </>
     )
 }
+
+Login.getLayout = getLayout;

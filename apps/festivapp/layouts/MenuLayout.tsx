@@ -1,16 +1,23 @@
 import styled from 'styled-components'
 import Header from '../components/Header';
+import IntroductionWrapper from '../components/index/IntroductionWrapper/IntroductionWrapper';
 
-const DashboardLayoutStyle = styled.div`
-   
+const MenuLayoutStyle = styled.div`
+   .layout__children {
+    margin-top: 50px;
+   }
 `
 export default function DashboardLayout({ children }) {
 
     return (
-      <DashboardLayoutStyle>
+      <MenuLayoutStyle>
         <Header />
-        {children}
-      </DashboardLayoutStyle>
+        <IntroductionWrapper />
+        <div className="layout__children">
+            {children}
+        </div>
+        
+      </MenuLayoutStyle>
     )
   }
 

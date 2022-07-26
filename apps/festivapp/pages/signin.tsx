@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Container from '../components/Container';
 import { useRouter} from 'next/router'
 import Head from 'next/head';
+import { getLayout } from '../layouts/MenuLayout';
 
 const StyledPage = styled.div`
   
@@ -46,7 +47,6 @@ export default function Signin() {
                 <title>Festivapp - Inscription</title>
             </Head>
             <StyledPage>
-                <Header />
                 <Container>
                     <main>
                         <h1>Inscription</h1>
@@ -65,3 +65,5 @@ export default function Signin() {
         </>
     )
 }
+
+Signin.getLayout = getLayout;
