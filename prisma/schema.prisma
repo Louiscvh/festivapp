@@ -21,6 +21,29 @@ model User {
   avatar       String?
   createdAt    DateTime @default(now())
   modifiedAt   DateTime @default(now())
+  follower     Follows[] @relation("following")
+  following    Follows[] @relation("follower")
+  post         Post[] @relation("post")
+
+}
+
+model Post {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String?
+  content      String
+  author       User @relation("post", fields: [authorId], references: [id])
+  authorId     Int
+  createdAt    DateTime @default(now())
+  modifiedAt   DateTime @default(now()) 
+}
+
+model Follows {
+  id          Int  @id @default(autoincrement())
+  follower    User @relation("follower", fields: [followerId], references: [id])
+  followerId  Int
+  following   User @relation("following", fields: [followingId], references: [id])
+  followingId Int
 }
 
 enum Role {

@@ -1,25 +1,60 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import { globalColors } from '../pages/_app';
 
+export default function Button({children, link, submit, ...buttonProps}: {children: React.ReactNode, color?: string, link?: string, submit?: boolean, onClick?: any}) {
 
-export default function Button({children, color, link}: {children: React.ReactNode, color: string, link?: string}) {
-    const StyledButton = styled.button`
-    all: unset;
-    border-radius: 150px;
-    background-color: ${color};
-    padding: 10px 25px;
-    color: ${globalColors.white};
-    font-family: 'Poppins', sans-serif;
-    cursor: pointer;
+    const StyledButton = styled.button.attrs({ 
+        type: submit ? "submit" : "button",
+      })`
+        color: white;
+        position: relative;
+        padding: 12px 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        border: none;
+        background: transparent;
+        font-weight: 600;
+        border-radius: 150px;
 
-    a {
-        color: ${globalColors.white};
-    }
-`
+        &::before {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0px;
+            top: 0px;
+            z-index: -1;
+            background: rgba(249, 58, 19, 0.32);
+            border-radius: 3rem;
+            transform: scale(1.08) scaleY(1.08);
+        }
+        
+        &:hover {
+            &::after {
+                transform: scale(1.08) scaleY(1.08);
+            }
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0px;
+            top: 0px;
+            z-index: -1;
+            background: linear-gradient(92.83deg, rgb(255, 116, 38) 0%, rgb(249, 58, 19) 100%);
+            border-radius: 3rem;
+            transition: transform .15s ease;
+        }
+
+        a {
+            color: white;
+        }
+    `
   return (
     
-    <StyledButton>
+    <StyledButton {...buttonProps}>
         {link ? 
         <Link href={link}>
             <a>{children}</a>

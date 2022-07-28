@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Head from 'next/head';
 import { useCookies } from 'react-cookie';
 import { getLayout } from '../layouts/MenuLayout';
+import Button from '../components/Button';
 
 const StyledPage = styled.div`
   
@@ -46,7 +47,7 @@ export default function Login() {
                         <form onSubmit={(e) => handleLogin(e)}>
                             <input onChange={(e) => setEmail(e.target.value)} required type="email" name="email" id="email" placeholder="Votre email" />
                             <input onChange={(e) => setPassword(e.target.value)} required type="password" name="email" id="password" placeholder="Votre mot de passe" />
-                            <button type="submit">Se connecter</button>
+                            <Button submit>Se connecter</Button>
                         </form>
                     </main>
                 </Container>    

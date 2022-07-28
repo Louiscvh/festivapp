@@ -18,11 +18,15 @@ export default async function Signin(req: NextApiRequest, res: NextApiResponse) 
                     lastName,
                     birth,
                     email,
+                    avatar: '/img/user.webp',
                     password: await bcrypt.hash(password, 10),
                     role: "USER",
                 },
             })
-            res.status(200).json(response)
+            const formatResponse = {
+                id: response.id,
+            }
+            res.status(200).json(formatResponse)
         }catch (e) {
             res.status(500).json("Cet email est déjà utilisé")
         }

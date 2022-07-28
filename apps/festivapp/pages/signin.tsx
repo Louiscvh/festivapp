@@ -1,10 +1,11 @@
 import { FormEvent, useRef, useState } from 'react';
 import styled from 'styled-components';
-import Header from '../components/Header';
 import Container from '../components/Container';
 import { useRouter} from 'next/router'
 import Head from 'next/head';
 import { getLayout } from '../layouts/MenuLayout';
+import Button from '../components/Button';
+import { useCookies } from 'react-cookie';
 
 const StyledPage = styled.div`
   
@@ -16,6 +17,7 @@ export default function Signin() {
     const [email, setEmail] = useState('');
     const [birth, setBirth] = useState('');
     const [password, setPassword] = useState('');
+    const [, setCookie] = useCookies(['user']);
     const router = useRouter()
     const confirmedPass = useRef(null)
     const handleSignin = async(e: FormEvent) => {
@@ -33,7 +35,9 @@ export default function Signin() {
             })
             const result = await response.json();
             if(response.ok){
-                router.push('/login')
+                console.log(result)
+                setCookie('user', result, { path: '/' });
+                router.push('/followsSuggestions')
             } else {
                 alert(result)
             }
@@ -57,7 +61,7 @@ export default function Signin() {
                             <input required onChange={(e) => setBirth(e.target.value)} type="date" name="birth" id="birth" placeholder='Votre date de naissance'/>
                             <input required onChange={(e) => setPassword(e.target.value)} type="password" name="password" id="password" placeholder='Votre mot de passe'/>
                             <input ref={confirmedPass} required type="password" name="passwordConfirm" id="passwordConfirm" placeholder='Confirmer votre mot de passe'/>
-                            <button type="submit">M&apos;inscrire</button>
+                            <Button submit>M&apos;inscrire</Button>
                         </form>
                     </main>
                 </Container>

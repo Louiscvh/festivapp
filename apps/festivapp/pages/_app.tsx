@@ -9,6 +9,7 @@ export const globalColors = {
   black: '#000',
   mainGradient: 'linear-gradient(90deg, #FF8A00 0%, #FF3D00 100%)',
   lightGrey: '#F1F1F1',
+  darkGrey: '#E2E2E2',
 }
 
 export const globalTransitions = {
@@ -22,8 +23,14 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${globalColors.lightGrey};
   }
 
-  h1, h2, h3, h4, h5 h6, p, a, button {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h1, h2, h3, h4, h5 h6, p, a, button, input {
     font-family: 'Poppins', sans-serif;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
   }
 
   a {
@@ -34,6 +41,10 @@ const GlobalStyle = createGlobalStyle`
     margin-block-start: 0em;
     margin-block-end: 0em;
     padding-inline-start: 0px;
+  }
+
+  li {
+    list-style: none;
   }
 `
 

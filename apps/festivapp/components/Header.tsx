@@ -1,18 +1,18 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
-import { globalColors, globalTransitions } from '../pages/_app'
+import { globalColors } from '../pages/_app'
+import Button from './Button';
+import Container from './Container';
 
 const StyledPage = styled.header`
-  background: ${globalColors.mainGradient};
-  max-height: 15px;
-  overflow: hidden;
-  transition: max-height 1s ease;
   padding: 10px;
-  cursor: pointer;
   z-index: 100;
   position: fixed;
-  width: calc(100% - 20px);
+  width: 90%;
   top: 0;
+  background-color: ${globalColors.lightGrey};
   &:hover {
     max-height: 400px;
     transition: max-height 1s ease;
@@ -24,55 +24,82 @@ const StyledPage = styled.header`
 
   .header__container {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-  }
+    justify-content: space-between;
+    align-items: center;
 
-  .header__indicator {
-    display: flex;
-    position: relative;
-    height: 30px;
-    width: 30px;
-    &::before, &::after {
-      content: '';
-      background-color: ${globalColors.white};
-      height: 15px;
-      width: 3px;
-      display: block;
-      position: absolute;
-      transition: transform 0.3s ${globalTransitions.main};
+    img {
+      height: 50px;
     }
 
-    &::after {
-      transform: rotate(90deg);
+    nav ul{
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+
+      & li:first-child a{
+        
+        color: ${globalColors.black};
+        opacity: 0.6;
+        font-weight: 500;
+        transition: opacity 0.3s ease;
+        will-change: color;
+        &:hover {
+          opacity: 1;
+        }
+      } 
     }
   }
 `;
 
 export default function Header() {
+  const [cookie,, removeCookie] = useCookies(['user']);
+  const router = useRouter()
+  
+  const handleLogout = (e) => {
+    e.preventDefault()
+    removeCookie('user', { path: '/' });
+    router.push('/login')
+  }
   return (
-    <StyledPage>
-      <div className="header__container">
-        <div className="header__indicator"></div>
-        <nav>
-          <ul>
+    <Container>
+      <StyledPage>
+        <div className="header__container">
+          <Link href="/">
+            <a>
+              <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/f/fd/Festival_de_Cannes_Logo.svg/2560px-Festival_de_Cannes_Logo.svg.png" alt="Festivapp" />
+            </a>
+          </Link>
+          <nav>
+            <ul>
+            {!cookie.user ? (
+              <>
+              <li>
+                <Link href="/signin">
+                  <a>Inscription</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/login">
+                  <a>
+                    <Button color='black'>
+                      Connexion
+                    </Button>
+                  </a>
+                </Link>
+              </li>
+              </>
+              ) : (
+              <li>
+                <Button onClick={(e) => handleLogout(e)}>
+                  Déconnexion
+                </Button>
+              </li>
+              )}
+            </ul>
             
-            <li>
-              <Link href="/">
-                <a>Accueil</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/signin">
-                <a>Inscription</a>
-              </Link>
-            </li>
-              <Link href="/login">
-                <a>Connexion</a>
-              </Link>
-          </ul>
-        </nav>
-      </div>
-    </StyledPage>
+          </nav>
+        </div>
+      </StyledPage>
+    </Container>
   )
 }

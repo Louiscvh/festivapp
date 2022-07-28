@@ -4,7 +4,7 @@ import IntroductionWrapper from '../components/index/IntroductionWrapper/Introdu
 
 const MenuLayoutStyle = styled.div`
    .layout__children {
-    margin-top: 50px;
+        margin-top: 100px;
    }
 `
 export default function DashboardLayout({ children }) {
