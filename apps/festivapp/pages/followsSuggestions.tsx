@@ -50,8 +50,18 @@ export default function FollowsSuggestions() {
        
     }, [router, cookies.user])
 
-    const handleSub = async (e: any) => {
+    const handleSub = async (e: any, followerId, followingId) => {
         e.preventDefault()
+        e.target.innerHTML = 'Suivi'
+        const response = await fetch(`/api/follow`, {
+            method: 'POST',
+            body: JSON.stringify({
+                followerId,
+                followingId
+            })
+        })
+        const result = await response.json();
+        alert(result)
     }
     console.log(suggestions)
   return (
@@ -66,7 +76,7 @@ export default function FollowsSuggestions() {
                                 <img src={suggestion.avatar} alt="User avatar"></img>
                                 <h2>{suggestion.firstName} {suggestion.lastName}</h2>
                                 <p>{suggestion.follower.length} abonné {suggestion.following.length} abonnement</p>
-                                <Button onClick={(e) => handleSub(e)}>
+                                <Button onClick={(e) => handleSub(e, cookies.user.id, suggestion.id)}>
                                     Suivre
                                 </Button>
                             </a>
@@ -74,7 +84,7 @@ export default function FollowsSuggestions() {
                     ))}
                 </div>
                 <Link href='/feed'>
-                    <a>Suivant</a>
+                    <a>Ignorer</a>
                 </Link>
             </section>
         </StyledPage>

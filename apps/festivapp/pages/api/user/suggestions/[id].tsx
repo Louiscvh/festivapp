@@ -27,7 +27,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 following: true,
               }
         })
-        console.log(request)
         res.status(200).json(request)
     }
 }

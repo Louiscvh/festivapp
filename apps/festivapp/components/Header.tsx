@@ -36,6 +36,16 @@ const StyledPage = styled.header`
       gap: 2rem;
       align-items: center;
 
+      .header__profil{
+        all: unset;
+        background-color: ${globalColors.black};
+        opacity: 1;
+        border-radius: 150px;
+        padding: 10px 25px;
+        z-index: 1;
+        color: ${globalColors.white};
+      }
+
       & li:first-child a{
         
         color: ${globalColors.black};
@@ -89,14 +99,24 @@ export default function Header() {
               </li>
               </>
               ) : (
-              <li>
-                <Button onClick={(e) => handleLogout(e)}>
-                  Déconnexion
-                </Button>
-              </li>
+              <>
+                <li>
+                  <Link href={`/profil/${cookie.user?.id}`} >
+                    <a>
+                      <button className="header__profil">
+                        Mon profil
+                      </button>
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Button onClick={(e: MouseEvent) => handleLogout(e)}>
+                    Déconnexion
+                  </Button>
+                </li>
+              </>
               )}
             </ul>
-            
           </nav>
         </div>
       </StyledPage>
