@@ -1,7 +1,7 @@
 {
   "version": 2,
   "builds": [
-    { "src": "dist/apps/client/.next", "use": "@now/next" },
+    { "src": "dist/apps/festivapp/.next", "use": "@now/next" },
     { "src": "dist/apps/server/main.js", "use": "@now/node" }
   ],
   "routes": [{ "src": "/api/(.*)", "dest": "dist/apps/server/main.js" }]
