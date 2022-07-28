@@ -8,6 +8,8 @@ import Button from '../components/Button';
 import { globalColors } from './_app';
 import FeedContainer from '../components/FeedContainer';
 import Post from '../components/feed/Post';
+import Skeleton from '../components/Skeleton';
+import Link from 'next/link';
 
 const StyledPage = styled.div`
     .feed__header {
@@ -41,10 +43,11 @@ const StyledPage = styled.div`
         gap: 3rem;
     }
     aside {
-        div {
+        div a{
             display: flex;
             align-items: center;
             gap: 1rem;
+            color: ${globalColors.black};
 
             img {
                 height: 50px;
@@ -56,17 +59,23 @@ const StyledPage = styled.div`
 export default function Feed() {
     const [cookies, , ] = useCookies(['user']);
     const [feed, setFeed] = useState([]);
+    const [user, setUser] = useState(null)
     const router = useRouter()
     useEffect(() => {
         if(!cookies.user){
             router.push('/')
         } else {
-            fetch(`/api/user/feed/${cookies.user.id}`)
+            fetch(`/api/user/feed/${cookies.user?.id}`)
             .then(response => response.json())
             .then(data => setFeed(data)) 
         }
     }, [cookies, router])
 
+    useEffect(() => {
+        fetch(`/api/user/${cookies.user?.id}`)
+        .then(response => response.json())
+        .then(data => setUser(data)) 
+    }, [cookies, router])
   return (
     <>
         <Container>
@@ -83,19 +92,26 @@ export default function Feed() {
                 <hr></hr>
                 <div className='feed__container'>
                     <FeedContainer>
+                    {feed.length ?
                         <section id="post__container">
-                            {feed.map((post, index) => (
+                             {feed.map((post, index) => (
                                 <Post data={post} key={index}></Post>
                             ))}
-                        </section>
+                        </section>: <Skeleton width={500} height={500}></Skeleton>}
                         <aside>
+                            {user ? 
                             <div>
-                                <img src='img/user.webp'></img>
-                                <h3>Louis Cavecchi</h3>
-                                <div className="suggetions__container">
-                                    
-                                </div>
+                            <Link href={`/profil/${user?.id}`}>
+                                <a>
+                                    <img src='img/user.webp'></img>
+                                    <h3>{user?.firstName} {user?.lastName}</h3>
+                                </a>
+                            </Link>
+                            <div className="suggetions__container">
+
                             </div>
+                        </div> : <Skeleton width={200} height={50}></Skeleton>}
+                            
                         </aside>
                     </FeedContainer>
                 </div>

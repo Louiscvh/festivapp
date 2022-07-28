@@ -17,9 +17,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 }
             },
             select:{
-                title: true,
                 description: true,
                 content: true,
+                location: true,
+                createdAt: true,
+                festival: {
+                    select: {
+                        name: true,
+                    }
+                },
                 author:{
                     select:{
                         firstName:true,

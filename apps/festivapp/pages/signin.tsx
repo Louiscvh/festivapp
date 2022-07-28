@@ -23,7 +23,7 @@ export default function Signin() {
     const handleSignin = async(e: FormEvent) => {
         e.preventDefault()
         if(password == confirmedPass.current.value){
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/signin`, {
+            const response = await fetch(`/api/signin`, {
                 method: 'POST',
                 body: JSON.stringify({
                     firstName,

@@ -28,13 +28,25 @@ model User {
 
 model Post {
   id           Int      @id @default(autoincrement())
-  title        String
   description  String?
   content      String
+  location     String?
   author       User @relation("post", fields: [authorId], references: [id])
   authorId     Int
   createdAt    DateTime @default(now())
-  modifiedAt   DateTime @default(now()) 
+  modifiedAt   DateTime @default(now())
+  festival     Festival @relation(fields: [festivalId], references: [id])
+  festivalId   Int
+}
+
+model Festival {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String?
+  adresse      String?
+  createdAt    DateTime @default(now())
+  modifiedAt   DateTime @default(now())
+  post         Post[]
 }
 
 model Follow {

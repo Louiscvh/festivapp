@@ -11,7 +11,7 @@ const StyledPage = styled.header`
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-
+    margin-top: 2rem;
     div {
       padding: 10px;
       border-radius: 8px;
@@ -36,16 +36,16 @@ export default function Profil({userData}) {
           <h1>{user?.firstName} {user?.lastName}</h1>
           <div className="user__stats">
               <div>
-                <p>{user?.follower.length}</p>
+                <h2>{user?.follower.length}</h2>
                 <p>Abonné{user?.follower.length > 1 ? "s" : ""}</p>
               </div>
               <div>
-                <p>{user?.following.length}</p>
+                <h2>{user?.following.length}</h2>
                 <p>Abonnement{user?.following.length > 1 ? "s" : ""}</p>
               </div>
               <div>
-                <p>{user?.post.length}</p>
-                <p>Post{user?.post.length > 1 ? "s" : ""}</p>
+                <h2>{user?.post.length}</h2>
+                <p>Post{user?.post.length > 1 ? "s" : ""} publié{user?.post.length > 1 ? "s" : ""}</p>
               </div>
           </div>
         </section>
@@ -72,7 +72,6 @@ export async function getServerSideProps(context: { query: { id: number } }) {
             post: {
                 select: {
                     id: true,
-                    title: true,
                 }
             }
         }

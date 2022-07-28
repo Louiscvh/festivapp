@@ -1,11 +1,20 @@
 import Link from "next/link";
 import styled from "styled-components"
 import { globalColors } from '../../pages/_app';
+import Moment from 'react-moment';
+import 'moment/locale/fr';
 
 const StyledPage = styled.div`
     padding: 1rem;
     background-color: ${globalColors.white};
     border-radius: 8px;
+
+    & > div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
     
     & > img{
         width: 100%;
@@ -16,7 +25,6 @@ const StyledPage = styled.div`
 
     a {
         color: ${globalColors.black};
-        margin-bottom: 1rem;
         display: flex;
         gap: 0.5rem;
         align-items: center;
@@ -24,21 +32,31 @@ const StyledPage = styled.div`
             height: 30px;
         }
     }
+
+    & > p {
+        margin: 1rem 0px;
+    }
+    time {
+        font-size: 0.8rem;
+        opacity: 0.6
+    }
 `
 
 export default function Post({data}) {
-    console.log(data)
   return (
     <StyledPage>
-        <Link href={`/profil/${data.author.id}`}>
-            <a>
-                <img src={data.author.avatar} alt="User avatar"></img>
-                <p>{data.author.firstName} {data.author.lastName}</p>
-            </a>
-        </Link>
+        <div>
+            <Link href={`/profil/${data.author.id}`}>
+                <a>
+                    <img src={data.author.avatar} alt="User avatar"></img>
+                    <h4>{data.author.firstName} {data.author.lastName}</h4>
+                </a>
+            </Link>
+            <p>{data.location}</p>
+        </div>
         <img src={`${data.content}`} alt="Post picture in feed"></img>
-        <h2>{data.title}</h2>
         <p>{data.description}</p>
+        <Moment locale="fr" fromNow>{data.createdAt}</Moment>
     </StyledPage>
   )
 }

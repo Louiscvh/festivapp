@@ -7,6 +7,7 @@ import Container from '../components/Container';
 import Button from '../components/Button';
 import { globalColors } from './_app';
 import Link from 'next/link';
+import Skeleton from '../components/Skeleton';
 
 
 const StyledPage = styled.div`
@@ -14,7 +15,7 @@ const StyledPage = styled.div`
     .suggestions__container {
         display: flex;
         gap: 30px;
-        margin-top: 1rem;
+        margin: 1rem 0px;
         flex-wrap: wrap;
 
         a {
@@ -70,7 +71,7 @@ export default function FollowsSuggestions() {
             <section>
                 <h1>Pour commencer, voici quelques profils qui pourrait vous intéréssé</h1>
                 <div className='suggestions__container'>
-                    {suggestions.map(suggestion => (
+                    {suggestions.length ? suggestions.map(suggestion => (
                         <Link href={`/profil/${suggestion.id}`} key={suggestion.id}>
                             <a>
                                 <img src={suggestion.avatar} alt="User avatar"></img>
@@ -81,7 +82,7 @@ export default function FollowsSuggestions() {
                                 </Button>
                             </a>
                         </Link>
-                    ))}
+                    )) : <Skeleton width={300} height={100}></Skeleton>}
                 </div>
                 <Link href='/feed'>
                     <a>Ignorer</a>

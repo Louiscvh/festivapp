@@ -20,7 +20,7 @@ export default function Login() {
 
     const handleLogin = async (e: FormEvent) => {
         e.preventDefault()
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+        const response = await fetch(`/api/login`, {
             method: 'POST',
             body: JSON.stringify({
                 email,
