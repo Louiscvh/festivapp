@@ -35,7 +35,7 @@ export default function Profil({userData}) {
     e.preventDefault();
     navigator.share({
       title: `Festivapp | ${user?.firstName} ${user?.lastName}`,
-      text: 'Hello World',
+      text: `Voici le profil de ${user?.firstName} ${user?.lastName}`,
       url: `/profil/${user?.id}`,
     })
   }
