@@ -24,6 +24,7 @@ model User {
   follower     Follow[] @relation("following")
   following    Follow[] @relation("follower")
   post         Post[] @relation("post")
+  like         Like[] @relation("userLike")
 }
 
 model Post {
@@ -37,6 +38,7 @@ model Post {
   modifiedAt   DateTime @default(now())
   festival     Festival @relation(fields: [festivalId], references: [id])
   festivalId   Int
+  like         Like[] @relation("postLike")
 }
 
 model Festival {
@@ -55,6 +57,14 @@ model Follow {
   followerId  Int
   following   User @relation("following", fields: [followingId], references: [id])
   followingId Int
+}
+
+model Like {
+  id          Int  @id @default(autoincrement())
+  author      User @relation("userLike", fields: [authorId], references: [id])
+  authorId    Int
+  post        Post @relation("postLike", fields: [postId], references: [id])
+  postId      Int
 }
 
 enum Role {

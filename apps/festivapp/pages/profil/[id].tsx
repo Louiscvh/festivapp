@@ -6,12 +6,14 @@ import { getLayout } from '../../layouts/MenuLayout';
 import { PrismaClient } from '@prisma/client';
 import { useState, useEffect } from 'react';
 import { globalColors } from '../_app';
+import Button from '../../components/Button';
+import Head from 'next/head';
 const StyledPage = styled.header`
   .user__stats {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    margin-top: 2rem;
+    margin: 2rem 0px;
     div {
       padding: 10px;
       border-radius: 8px;
@@ -29,8 +31,20 @@ export default function Profil({userData}) {
   }, [userData])
   console.log(user)
 
+  const handleShare = (e: Event) => {
+    e.preventDefault();
+    navigator.share({
+      title: `Festivapp | ${user?.firstName} ${user?.lastName}`,
+      text: 'Hello World',
+      url: `/profil/${user?.id}`,
+    })
+  }
+
   return (
     <Container>
+      <Head>
+        <title>Festivapp | {user?.firstName} {user?.lastName} </title>
+      </Head>
       <StyledPage>
         <section>
           <h1>{user?.firstName} {user?.lastName}</h1>
@@ -48,6 +62,9 @@ export default function Profil({userData}) {
                 <p>Post{user?.post.length > 1 ? "s" : ""} publié{user?.post.length > 1 ? "s" : ""}</p>
               </div>
           </div>
+          <Button onClick={(e: Event) => handleShare(e)}>
+            Partager ce profil
+          </Button>
         </section>
       </StyledPage>
     </Container>

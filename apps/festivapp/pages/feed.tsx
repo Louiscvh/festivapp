@@ -29,6 +29,9 @@ const StyledPage = styled.div`
                 background-color: ${globalColors.darkGrey};
                 border-radius: 150px;
                 font-family: 'Poppins', sans-serif;
+                @media screen and (max-width: 1024px) {
+                    display: none;
+                }
             }
         }
     }
@@ -51,6 +54,12 @@ const StyledPage = styled.div`
 
             img {
                 height: 50px;
+            }
+        }
+
+        @media screen and (max-width: 1024px) {
+            & {
+                display: none;
             }
         }
     }
