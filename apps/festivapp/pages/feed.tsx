@@ -11,6 +11,7 @@ import Post from '../components/feed/Post';
 import Skeleton from '../components/Skeleton';
 import Link from 'next/link';
 import Suggestions from '../components/feed/Suggestions';
+import Head from 'next/head';
 
 const StyledPage = styled.div`
     .feed__header {
@@ -94,6 +95,9 @@ export default function Feed() {
     console.log(feed)
   return (
     <>
+        <Head>
+            <title>Festivapp | Mon feed </title>
+        </Head>
         <Container>
             <StyledPage>
                 <div className="feed__header">
