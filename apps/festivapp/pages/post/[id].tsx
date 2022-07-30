@@ -14,6 +14,7 @@ import { useCookies } from 'react-cookie';
 const StyledPage = styled.div`
     display: flex;
     gap: 2rem;
+    align-items: flex-start;
     @media screen and (max-width: 1024px) {
         flex-direction: column;
     }
@@ -27,6 +28,7 @@ const StyledPage = styled.div`
     }
      & > img {
         width: 50%;
+        height: auto;
         border-radius: 8px;
         aspect-ratio: 1/1;
         object-fit: cover;
@@ -69,10 +71,26 @@ export default function Post({postData}) {
     const [likeCount, setLikeCount] = useState(postData.like.length)
     const [isLiked, setIsLiked] = useState(null)
     const [cookies, , ] = useCookies(['user']);
+    const [postComment, setPostComment] = useState(postData.comment)
+    const [comment, setComment] = useState('')
     useEffect(() => {
         setIsLiked(postData.like.some( like => like['authorId'] == cookies.user?.id))
     }, [postData.like, cookies.user?.id] )
-    console.log(postData)
+    console.log(postComment)
+
+    const handleComment = async(e) => {
+        e.preventDefault()
+        setComment('')
+        setPostComment(oldArray => [...oldArray,{content: comment, author: {firstName: cookies.user?.firstName, lastName:cookies.user?.lastName, avatar: cookies.user?.avatar}}] );
+        await fetch(`/api/comment/createComment`, {
+            method: 'POST',
+            body: JSON.stringify({
+                comment,
+                postId: postData.id,
+                authorId: cookies.user?.id
+            })
+        })
+    }
   return (
     <Container>
         <StyledPage>
@@ -84,14 +102,14 @@ export default function Post({postData}) {
                 <Like postId={post.id} userId={cookies.user?.id} setIsLiked={setIsLiked} isLiked={isLiked} likeCount={likeCount} setLikeCount={setLikeCount}></Like>
                 <section>
                     <h2>Commentaire{post.comment.length > 1 ? "s" : ""} ({post.comment.length})</h2>
-                    <form>
-                        <input type="text" placeholder="Commenter"></input>
-                        <Button>
+                    <form onSubmit={(e) => handleComment(e)}>
+                        <input type="text" placeholder="Commenter" onChange={(e) => setComment(e.target.value)}></input>
+                        <Button submit>
                             Publier
                         </Button>
                     </form>
                     <div>
-                        {post.comment.map((comment, index) => (
+                        {postComment.map((comment, index) => (
                             <div key={index}>
                             <Comment data={comment} />
                             </div>
@@ -111,7 +129,7 @@ export async function getServerSideProps(context: { query: { id: number } }) {
 
     const request = await prisma.post.findFirst({
         where: {
-            id: Number(id)
+            id: Number(id),
         },
         select: {
             id: true,

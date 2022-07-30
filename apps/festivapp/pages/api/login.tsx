@@ -29,6 +29,9 @@ export default async function handler(req, res) {
             if(await bcrypt.compare(password, response.password)){
                 const secureUser = {
                     id: response.id,
+                    avatar: response.avatar,
+                    firstName: response.firstName,
+                    lastName: response.lastName,
                 }
                 res.status(200).json(secureUser)
                 await prisma.$disconnect()
