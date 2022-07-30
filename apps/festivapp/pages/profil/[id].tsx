@@ -46,8 +46,6 @@ const StyledPage = styled.div`
 `;
 
 export default function Profil({userData}) {
-  const [cookie,, removeCookie] = useCookies(['user']);
-  const router = useRouter()
   const [user, setUser] = useState(null);
   const [canShare, setCanShare] = useState(false);
   useEffect(() => {
