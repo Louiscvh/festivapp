@@ -88,7 +88,8 @@ const StyledMenuBurger = styled.div`
 
   ul{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     gap: 1rem;
   }
 
