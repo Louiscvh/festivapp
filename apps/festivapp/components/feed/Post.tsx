@@ -64,6 +64,7 @@ export default function Post({userLike, data}) {
     const postisLiked = userLike?.some( like => like['authorId'] == cookies.user?.id);
     setIsLiked(postisLiked)
    }, [userLike, cookies.user])
+   console.log(data)
 
   return (
     <StyledPage>
@@ -86,6 +87,7 @@ export default function Post({userLike, data}) {
             userId={cookies.user?.id}/>
         <p>{likeCount} like{likeCount > 1 ? "s" : ""}</p>
         </div>
+        <h4>{data.festival.name}</h4>
         <p>{data.description}</p>
         {!data.comment.length ? 
         <Link href={`post/${data.id}`}>

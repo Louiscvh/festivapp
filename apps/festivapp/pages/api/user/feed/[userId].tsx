@@ -35,10 +35,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 },
                 author:{
                     select:{
+                        id:true,
                         firstName:true,
                         lastName: true,
                         avatar: true,
-                        id:true
                     }
                 }
             }
