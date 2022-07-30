@@ -11,6 +11,10 @@ const StyledPage = styled.div`
     padding: 1rem;
     background-color: ${globalColors.white};
     border-radius: 8px;
+    min-width: 500px;
+    @media screen and (max-width: 1024px) {
+        min-width: 90%;
+    } 
 
     & > div {
         display: flex;
@@ -50,7 +54,6 @@ export default function Post({userLike, data}) {
     const [cookies, , ] = useCookies(['user']);
     const [likeCount, setLikeCount] = useState(data.like.length);
     const [isLiked, setIsLiked] = useState(null);
-   console.log(userLike)
 
    useEffect(() => {
     const postisLiked = userLike?.some( like => like['authorId'] == cookies.user?.id);

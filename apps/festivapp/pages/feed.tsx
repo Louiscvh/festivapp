@@ -10,6 +10,7 @@ import FeedContainer from '../components/FeedContainer';
 import Post from '../components/feed/Post';
 import Skeleton from '../components/Skeleton';
 import Link from 'next/link';
+import Suggestions from '../components/feed/Suggestions';
 
 const StyledPage = styled.div`
     .feed__header {
@@ -84,7 +85,7 @@ export default function Feed() {
         fetch(`/api/user/${cookies.user?.id}`)
         .then(response => response.json())
         .then(data => setUser(data)) 
-    }, [cookies, router])
+    }, [cookies])
   return (
     <>
         <Container>
@@ -116,9 +117,7 @@ export default function Feed() {
                                     <h3>{user?.firstName} {user?.lastName}</h3>
                                 </a>
                             </Link>
-                            <div className="suggetions__container">
-
-                            </div>
+                            <Suggestions/>
                         </div> : <Skeleton width={200} height={50}></Skeleton>}
                             
                         </aside>

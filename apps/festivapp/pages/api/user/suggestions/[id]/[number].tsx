@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if(req.method == "GET") {
-        const { id } = req.query
+        const { id, number} = req.query
         const request = await prisma.user.findMany({
             where : {
                 NOT: {
@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                   _count: 'desc',
                 },
               },
-              take: 10,
+              take: Number(number),
               select : {
                 id: true,
                 avatar: true,
