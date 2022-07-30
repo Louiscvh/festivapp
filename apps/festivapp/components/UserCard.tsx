@@ -5,7 +5,7 @@ import { globalColors } from "../pages/_app";
 import Button from "./Button"
 
 const StyledPage = styled.a`
-   
+        cursor: pointer;
         padding: 1rem;
         color: ${globalColors.black};
         background-color: ${globalColors.white};
@@ -50,13 +50,13 @@ const handleSub = async (e: any, followerId, followingId) => {
     alert(result)
     }
   return (
-    <Link href={`/profil/${data.id}`} key={data.id}>
+    <Link passHref href={`/profil/${data.id}`} key={data.id}>
         <StyledPage>
             <div>
                 <img src={data.avatar} alt="User avatar"></img>
                 <div>
                     <h3>{data.firstName + " " + data.lastName}</h3>
-                    <p>{data.follower.length} abonné</p>
+                    <p>{data.follower.length} abonné{data.follower.length > 1 ? "s" : ""}</p>
                 </div>
             </div>
             <Button onClick={(e) => handleSub(e, cookies.user.id, data.id)}>

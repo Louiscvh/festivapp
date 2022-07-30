@@ -52,6 +52,9 @@ const StyledPage = styled.div`
             align-items: center;
             gap: 1rem;
             color: ${globalColors.black};
+            background-color: ${globalColors.white};
+            padding: 1rem;
+            border-radius: 8px;
 
             img {
                 height: 50px;
@@ -114,7 +117,10 @@ export default function Feed() {
                             <Link href={`/profil/${user?.id}`}>
                                 <a>
                                     <img src='img/user.webp'></img>
-                                    <h3>{user?.firstName} {user?.lastName}</h3>
+                                    <div>
+                                        <h3>{user?.firstName} {user?.lastName}</h3>
+                                        <p>{user?.follower.length} abonné{user?.follower.length > 1 ? "s" : ""} {user?.following.length} abonnement{user?.following.length > 1 ? "s" : ""}</p>
+                                    </div>
                                 </a>
                             </Link>
                             <Suggestions/>
