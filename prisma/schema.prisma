@@ -50,6 +50,7 @@ model Festival {
   adresse      String?
   createdAt    DateTime @default(now())
   modifiedAt   DateTime @default(now())
+  genre        Genre  @default(OTHER)
   post         Post[]
 }
 
@@ -83,4 +84,13 @@ model Comment {
 enum Role {
   USER
   ADMIN
+}
+
+enum Genre {
+  ROCK
+  POP
+  JAZZ
+  CLASSIC
+  METHAL
+  OTHER
 }

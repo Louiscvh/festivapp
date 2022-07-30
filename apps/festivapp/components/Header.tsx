@@ -119,30 +119,52 @@ export default function Header() {
         <Container>
           <nav>
             <ul>
-                <li onClick={() => setMobileOpen(!mobileOpen)}>
-                  <Link href={`/profil/${cookie.user?.id}`} >
-                    <a>
-                      <button className="header__profil">
-                        Mon profil
-                      </button>
-                    </a>
-                  </Link>
-                </li>
-                <li onClick={() => setMobileOpen(!mobileOpen)}>
-                  <Link href={`/followsSuggestions`} >
-                    <a>
-                      <button className="header__profil">
-                        Explorer
-                      </button>
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Button onClick={(e: MouseEvent) => handleLogout(e)}>
-                    Déconnexion
-                  </Button>
-                </li>
-            </ul>
+            {cookie.user ? 
+              <>
+                  <li onClick={() => setMobileOpen(!mobileOpen)}>
+                    <Link href={`/profil/${cookie.user?.id}`} >
+                      <a>
+                        <button className="header__profil">
+                          Mon profil
+                        </button>
+                      </a>
+                    </Link>
+                  </li>
+                  <li onClick={() => setMobileOpen(!mobileOpen)}>
+                    <Link href={`/followsSuggestions`} >
+                      <a>
+                        <button className="header__profil">
+                          Explorer
+                        </button>
+                      </a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Button onClick={(e: MouseEvent) => handleLogout(e)}>
+                      Déconnexion
+                    </Button>
+                  </li> 
+                </>: <>
+                  <li onClick={() => setMobileOpen(!mobileOpen)}>
+                    <Link href={`/login`} >
+                      <a>
+                        <Button>
+                          Se connecter
+                        </Button>
+                      </a>
+                    </Link>
+                  </li>
+                  <li onClick={() => setMobileOpen(!mobileOpen)}>
+                    <Link href={`/signin`} >
+                      <a>
+                        <button className="header__profil">
+                          Inscription
+                        </button>
+                      </a>
+                    </Link>
+                  </li>
+                </>}
+            </ul> 
           </nav>
         </Container>
       </StyledMenuBurger>

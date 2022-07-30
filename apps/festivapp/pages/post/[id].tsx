@@ -20,7 +20,7 @@ const StyledPage = styled.div`
     }
 
     & > div > h3 {
-        margin-top: 1rem;
+        margin-top: 2rem;
     }
 
     & > div > p {
@@ -38,6 +38,7 @@ const StyledPage = styled.div`
     }
 
     section {
+        margin-top: 2rem;
         h2 {
             margin-bottom: 1rem;
         }

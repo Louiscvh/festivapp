@@ -25,8 +25,14 @@ height: 200vh;
     position: relative;
     display: flex;
     margin-top: 25vh;
+    @media screen and (max-width: 1024px) {
+      margin-top: 100px;
+  } 
     justify-content: space-between;
     align-items: center;
+    @media screen and (max-width: 1024px) {
+        flex-direction: column;
+    }
 
     .landing__hero__left {
       padding: 20px;
@@ -50,6 +56,10 @@ height: 200vh;
       clip-path: inset(0 0 100% 0);
       transition: clip-path 1s ${globalTransitions.main};
       border-radius: 8px;
+      @media screen and (max-width: 1024px) {
+          max-width: 100%;
+          margin-top: 2rem;
+      }
     }
   }
 
