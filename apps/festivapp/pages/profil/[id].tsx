@@ -8,12 +8,18 @@ import { useState, useEffect } from 'react';
 import { globalColors } from '../_app';
 import Button from '../../components/Button';
 import Head from 'next/head';
-const StyledPage = styled.header`
+const StyledPage = styled.div`
+  img {
+    height: 80px;
+    margin-top: 1rem;
+  }
+
   .user__stats {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
     margin: 2rem 0px;
+
     div {
       padding: 10px;
       border-radius: 8px;
@@ -49,6 +55,7 @@ export default function Profil({userData}) {
       <StyledPage>
         <section>
           <h1>{user?.firstName} {user?.lastName}</h1>
+          <img src={user?.avatar} alt='User avatar'></img>
           <div className="user__stats">
               <div>
                 <h2>{user?.follower.length}</h2>
@@ -61,6 +68,10 @@ export default function Profil({userData}) {
               <div>
                 <h2>{user?.post.length}</h2>
                 <p>Post{user?.post.length > 1 ? "s" : ""} publié{user?.post.length > 1 ? "s" : ""}</p>
+              </div>
+              <div>
+                <h2>{user?.like.length}</h2>
+                <p>Post{user?.like.length > 1 ? "s" : ""} liké{user?.like.length > 1 ? "s" : ""}</p>
               </div>
           </div>
           <Button onClick={(e: Event) => handleShare(e)}>
@@ -87,6 +98,7 @@ export async function getServerSideProps(context: { query: { id: number } }) {
             lastName: true,
             follower: true,
             following: true,
+            like: true,
             post: {
                 select: {
                     id: true,
