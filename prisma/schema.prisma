@@ -25,7 +25,7 @@ model User {
   following    Follow[] @relation("follower")
   post         Post[] @relation("post")
   like         Like[] @relation("userLike")
-  comment      Comment[] @relation("comment")
+  comment      Comment[] @relation("userComment")
 }
 
 model Post {
@@ -40,7 +40,7 @@ model Post {
   festival     Festival @relation(fields: [festivalId], references: [id])
   festivalId   Int
   like         Like[] @relation("postLike")
-  comment      Comment[] @relation("comment")
+  comment      Comment[] @relation("postComment")
 }
 
 model Festival {
@@ -71,9 +71,9 @@ model Like {
 
 model Comment {
   id          Int  @id @default(autoincrement())
-  author      User @relation("comment", fields: [authorId], references: [id])
+  author      User @relation("userComment", fields: [authorId], references: [id])
   authorId    Int
-  post        Post @relation("comment", fields: [postId], references: [id])
+  post        Post @relation("postComment", fields: [postId], references: [id])
   postId      Int
   content     String
   createdAt   DateTime @default(now())
