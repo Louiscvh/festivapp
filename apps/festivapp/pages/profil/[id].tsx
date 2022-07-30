@@ -17,6 +17,7 @@ const StyledPage = styled.div`
   .user__stats {
     display: flex;
     align-items: flex-start;
+    flex-wrap: wrap;
     gap: 1rem;
     margin: 2rem 0px;
 
@@ -41,7 +42,7 @@ export default function Profil({userData}) {
     if(navigator) {
       navigator.share({
         title: `Festivapp | ${user?.firstName} ${user?.lastName}`,
-        text: `Voici le profil de ${user?.firstName} ${user?.lastName}`,
+        text: `Festivapp | ${user?.firstName} ${user?.lastName}`,
         url: `/profil/${user?.id}`,
       })
     }
