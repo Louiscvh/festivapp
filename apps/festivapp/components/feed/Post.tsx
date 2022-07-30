@@ -28,6 +28,7 @@ const StyledPage = styled.div`
         object-fit: cover;
         aspect-ratio: 1/1;
         border-radius: 8px;
+        cursor: pointer;
     }
 
     a {
@@ -61,8 +62,7 @@ export default function Post({userLike, data}) {
     const [isLiked, setIsLiked] = useState(null);
 
    useEffect(() => {
-    const postisLiked = userLike?.some( like => like['authorId'] == cookies.user?.id);
-    setIsLiked(postisLiked)
+    setIsLiked(userLike?.some( like => like['authorId'] == cookies.user?.id))
    }, [userLike, cookies.user])
    console.log(data)
 
@@ -77,7 +77,9 @@ export default function Post({userLike, data}) {
             </Link>
             <p>{data.location}</p>
         </div>
-        <img src={`${data.content}`} alt="Post picture in feed"></img>
+        <Link passHref href={`/post/${data.id}`}>
+            <img src={`${data.content}`} alt="Post picture in feed"></img>
+        </Link>
         <div>
         <Like isLiked={isLiked} 
             setIsLiked={setIsLiked} 
@@ -85,14 +87,13 @@ export default function Post({userLike, data}) {
             setLikeCount={setLikeCount} 
             postId={data.id} 
             userId={cookies.user?.id}/>
-        <p>{likeCount} like{likeCount > 1 ? "s" : ""}</p>
         </div>
         <h4>{data.festival.name}</h4>
         <p>{data.description}</p>
         {data.comment.length ? 
         <Link href={`post/${data.id}`}>
             <a>
-                <p>Afficher {data.comment.length > 1 ? `les ${data.comment.length}` : "le commentaire"}</p>
+                <p>Afficher {data.comment.length > 1 ? `les ${data.comment.length} commentaires` : "le commentaire"}</p>
             </a>
         </Link>
          : ""}

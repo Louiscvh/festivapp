@@ -94,7 +94,7 @@ export default function Profil({userData}) {
           </div>
         </section>
         <section id='profil__post'>
-          <h2>Posts de {user?.firstName}</h2>
+          <h2>Post{user?.post.length > 1 ? "s" : ""} de {user?.firstName}</h2>
           <div>
             {user?.post.map((post, index) => (
               <Link href={`/post/${post.id}`} key={index}>
