@@ -118,7 +118,7 @@ export default function Header() {
         <Container>
           <nav>
             <ul>
-                <li>
+                <li onClick={() => setMobileOpen(!mobileOpen)}>
                   <Link href={`/profil/${cookie.user?.id}`} >
                     <a>
                       <button className="header__profil">
@@ -140,7 +140,7 @@ export default function Header() {
         <StyledPage>
           <div className="header__container">
             <Link href="/">
-              <a>
+              <a onClick={() => setMobileOpen(false)}>
                 <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/f/fd/Festival_de_Cannes_Logo.svg/2560px-Festival_de_Cannes_Logo.svg.png" alt="Festivapp" />
               </a>
             </Link>
