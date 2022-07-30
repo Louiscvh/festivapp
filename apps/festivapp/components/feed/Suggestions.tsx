@@ -5,6 +5,12 @@ import Skeleton from "../Skeleton";
 import UserCard from "../UserCard";
 
 const StyledPage = styled.div`
+
+.suggestions__container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
   section > h3{
     margin: 1rem 0px;
   }
@@ -23,7 +29,7 @@ export default function Suggestions() {
     <StyledPage>
         <section>
           <h3>Suggestions</h3>
-          <div>
+          <div className="suggestions__container">
             {suggestions.length ?
               suggestions.map(suggestion => (
                 <UserCard data={suggestion} key={suggestion.id}></UserCard>

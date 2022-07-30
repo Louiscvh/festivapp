@@ -47,7 +47,7 @@ const StyledPage = styled.div`
         gap: 3rem;
     }
     aside {
-        div a{
+        & > div > a{
             display: flex;
             align-items: center;
             gap: 1rem;

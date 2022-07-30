@@ -127,6 +127,15 @@ export default function Header() {
                     </a>
                   </Link>
                 </li>
+                <li onClick={() => setMobileOpen(!mobileOpen)}>
+                  <Link href={`/followsSuggestions`} >
+                    <a>
+                      <button className="header__profil">
+                        Explorer
+                      </button>
+                    </a>
+                  </Link>
+                </li>
                 <li>
                   <Button onClick={(e: MouseEvent) => handleLogout(e)}>
                     Déconnexion

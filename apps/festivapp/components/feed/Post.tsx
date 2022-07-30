@@ -78,8 +78,8 @@ export default function Post({userLike, data}) {
             likeCount={likeCount} 
             setLikeCount={setLikeCount} 
             postId={data.id} 
-            userId={cookies?.user.id}/>
-        <p>{likeCount} like</p>
+            userId={cookies.user?.id}/>
+        <p>{likeCount} like{likeCount > 1 ? "s" : ""}</p>
         </div>
         <p> {data.description}</p>
         <Moment locale="fr" fromNow>{data.createdAt}</Moment>

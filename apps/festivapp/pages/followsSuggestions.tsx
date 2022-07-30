@@ -14,11 +14,10 @@ import UserCard from '../components/UserCard';
 const StyledPage = styled.div`
     
     .suggestions__container {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 30px;
         margin: 1rem 0px;
-        flex-wrap: wrap;
-        
     }
 `
 export default function FollowsSuggestions() {
