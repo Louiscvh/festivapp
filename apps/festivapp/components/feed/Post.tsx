@@ -89,7 +89,7 @@ export default function Post({userLike, data}) {
         </div>
         <h4>{data.festival.name}</h4>
         <p>{data.description}</p>
-        {!data.comment.length ? 
+        {data.comment.length ? 
         <Link href={`post/${data.id}`}>
             <a>
                 <p>Afficher {data.comment.length > 1 ? `les ${data.comment.length}` : "le commentaire"}</p>
