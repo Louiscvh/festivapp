@@ -17,6 +17,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 lastName: true,
                 follower: true,
                 following: true,
+                like: {
+                    select: {
+                        authorId: true
+                    }
+                }
             }
         })
         res.status(200).json(request)

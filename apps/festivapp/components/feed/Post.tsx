@@ -3,6 +3,9 @@ import styled from "styled-components"
 import { globalColors } from '../../pages/_app';
 import Moment from 'react-moment';
 import 'moment/locale/fr';
+import Like from "./Like";
+import { useCookies } from 'react-cookie';
+import { useEffect, useState } from "react";
 
 const StyledPage = styled.div`
     padding: 1rem;
@@ -42,7 +45,18 @@ const StyledPage = styled.div`
     }
 `
 
-export default function Post({data}) {
+export default function Post({userLike, data}) {
+
+    const [cookies, , ] = useCookies(['user']);
+    const [likeCount, setLikeCount] = useState(data.like.length);
+    const [isLiked, setIsLiked] = useState(null);
+   console.log(userLike)
+
+   useEffect(() => {
+    const postisLiked = userLike?.some( like => like['authorId'] == cookies.user?.id);
+    setIsLiked(postisLiked)
+   }, [userLike, cookies.user])
+
   return (
     <StyledPage>
         <div>
@@ -55,7 +69,16 @@ export default function Post({data}) {
             <p>{data.location}</p>
         </div>
         <img src={`${data.content}`} alt="Post picture in feed"></img>
-        <p>{data.description}</p>
+        <div>
+        <Like isLiked={isLiked} 
+            setIsLiked={setIsLiked} 
+            likeCount={likeCount} 
+            setLikeCount={setLikeCount} 
+            postId={data.id} 
+            userId={cookies?.user.id}/>
+        <p>{likeCount} like</p>
+        </div>
+        <p> {data.description}</p>
         <Moment locale="fr" fromNow>{data.createdAt}</Moment>
     </StyledPage>
   )

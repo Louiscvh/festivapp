@@ -104,7 +104,7 @@ export default function Feed() {
                     {feed.length ?
                         <section id="post__container">
                              {feed.map((post, index) => (
-                                <Post data={post} key={index}></Post>
+                                <Post userLike={user?.like} data={post} key={index}></Post>
                             ))}
                         </section>: <Skeleton width={500} height={500}></Skeleton>}
                         <aside>

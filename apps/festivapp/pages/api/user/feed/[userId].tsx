@@ -17,10 +17,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 }
             },
             select:{
+                id: true,
                 description: true,
                 content: true,
                 location: true,
                 createdAt: true,
+                like: true,
                 festival: {
                     select: {
                         name: true,
@@ -37,7 +39,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
             
         })
-        console.log(request, userId)
         res.status(200).json(request)
     }
 }

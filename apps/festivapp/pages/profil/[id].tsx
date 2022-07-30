@@ -29,15 +29,16 @@ export default function Profil({userData}) {
   useEffect(() => {
     setUser(userData)
   }, [userData])
-  console.log(user)
 
   const handleShare = (e: Event) => {
     e.preventDefault();
-    navigator.share({
-      title: `Festivapp | ${user?.firstName} ${user?.lastName}`,
-      text: `Voici le profil de ${user?.firstName} ${user?.lastName}`,
-      url: `/profil/${user?.id}`,
-    })
+    if(navigator) {
+      navigator.share({
+        title: `Festivapp | ${user?.firstName} ${user?.lastName}`,
+        text: `Voici le profil de ${user?.firstName} ${user?.lastName}`,
+        url: `/profil/${user?.id}`,
+      })
+    }
   }
 
   return (
