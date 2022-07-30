@@ -16,7 +16,7 @@ const StyledPage = styled.div`
   }
 `
 
-export default function Suggestions() {
+export default function Suggestions({userFollow}) {
     const [suggestions, setSuggestions] = useState([]);
     const [cookies, ,] = useCookies(['user']);
     useEffect(() => {
@@ -24,7 +24,7 @@ export default function Suggestions() {
         .then(response => response.json())
         .then(data => setSuggestions(data)) 
     }, [cookies])
-    console.log(suggestions)
+    console.log(userFollow)
   return (
     <StyledPage>
         <section>
@@ -32,7 +32,7 @@ export default function Suggestions() {
           <div className="suggestions__container">
             {suggestions.length ?
               suggestions.map(suggestion => (
-                <UserCard data={suggestion} key={suggestion.id}></UserCard>
+                <UserCard isFollow={userFollow.some(follow => follow['followingId'] == suggestion.id)} data={suggestion} key={suggestion.id}></UserCard>
               ))
               : <Skeleton width={300} height={50}></Skeleton>
             }

@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { globalColors } from '../_app';
 import Button from '../../components/Button';
 import Head from 'next/head';
+import Link from 'next/link';
 const StyledPage = styled.div`
   img {
     height: 80px;
@@ -27,15 +28,33 @@ const StyledPage = styled.div`
       background-color: ${globalColors.white};
     }
   }
+
+  #profil__post {
+    div {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+
+      img{
+        height: 100px;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+    }
+  }
 `;
 
 export default function Profil({userData}) {
   const [cookie,, removeCookie] = useCookies(['user']);
   const router = useRouter()
   const [user, setUser] = useState(null);
+  const [canShare, setCanShare] = useState(false);
   useEffect(() => {
     setUser(userData)
+    if(navigator.share) setCanShare(true)
   }, [userData])
+  console.log(userData)
 
   const handleShare = (e: Event) => {
     e.preventDefault();
@@ -75,9 +94,21 @@ export default function Profil({userData}) {
                 <p>Post{user?.like.length > 1 ? "s" : ""} liké{user?.like.length > 1 ? "s" : ""}</p>
               </div>
           </div>
-          <Button onClick={(e: Event) => handleShare(e)}>
+        </section>
+        <section id='profil__post'>
+          <h2>Posts de {user?.firstName}</h2>
+          <div>
+            {user?.post.map((post, index) => (
+              <Link href={`/post/${post.id}`} key={index}>
+                <a>
+                  <img src={post.content} ></img>
+                </a>
+              </Link>
+            ))}
+          </div>
+          {canShare ? <Button onClick={(e: Event) => handleShare(e)}>
             Partager ce profil
-          </Button>
+          </Button> : ""}
         </section>
       </StyledPage>
     </Container>
@@ -103,6 +134,7 @@ export async function getServerSideProps(context: { query: { id: number } }) {
             post: {
                 select: {
                     id: true,
+                    content: true
                 }
             }
         }

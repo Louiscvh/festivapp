@@ -41,7 +41,12 @@ const StyledPage = styled.div`
     }
 
     & > p {
-        margin: 1rem 0px;
+        margin: 0.6rem 0px;
+    }
+
+    & > a {
+        margin: 0.6rem 0px;
+        opacity: 0.6;
     }
     time {
         font-size: 0.8rem;
@@ -81,7 +86,14 @@ export default function Post({userLike, data}) {
             userId={cookies.user?.id}/>
         <p>{likeCount} like{likeCount > 1 ? "s" : ""}</p>
         </div>
-        <p> {data.description}</p>
+        <p>{data.description}</p>
+        {!data.comment.length ? 
+        <Link href={`post/${data.id}`}>
+            <a>
+                <p>Afficher {data.comment.length > 1 ? `les ${data.comment.length}` : "le commentaire"}</p>
+            </a>
+        </Link>
+         : ""}
         <Moment locale="fr" fromNow>{data.createdAt}</Moment>
     </StyledPage>
   )

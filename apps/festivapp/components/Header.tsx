@@ -177,15 +177,6 @@ export default function Header() {
                 ) : (
                 <>
                   <li>
-                    <Link href={`/profil/${cookie.user?.id}`} >
-                      <a>
-                        <button className="header__profil">
-                          Mon profil
-                        </button>
-                      </a>
-                    </Link>
-                  </li>
-                  <li>
                     <Button onClick={(e: MouseEvent) => handleLogout(e)}>
                       Déconnexion
                     </Button>

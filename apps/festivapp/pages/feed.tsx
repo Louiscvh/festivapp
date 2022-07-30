@@ -47,6 +47,7 @@ const StyledPage = styled.div`
         gap: 3rem;
     }
     aside {
+        min-width: 400px;
         & > div > a{
             display: flex;
             align-items: center;
@@ -55,6 +56,7 @@ const StyledPage = styled.div`
             background-color: ${globalColors.white};
             padding: 1rem;
             border-radius: 8px;
+            width: calc(100% - 2rem);
 
             img {
                 height: 50px;
@@ -89,6 +91,7 @@ export default function Feed() {
         .then(response => response.json())
         .then(data => setUser(data)) 
     }, [cookies])
+    console.log(feed)
   return (
     <>
         <Container>
@@ -110,7 +113,7 @@ export default function Feed() {
                              {feed.map((post, index) => (
                                 <Post userLike={user?.like} data={post} key={index}></Post>
                             ))}
-                        </section>: <Skeleton width={500} height={500}></Skeleton>}
+                        </section>: <Skeleton width={800} height={500}></Skeleton>}
                         <aside>
                             {user ? 
                             <div>
@@ -123,8 +126,8 @@ export default function Feed() {
                                     </div>
                                 </a>
                             </Link>
-                            <Suggestions/>
-                        </div> : <Skeleton width={200} height={50}></Skeleton>}
+                            <Suggestions userFollow={user?.following}/>
+                        </div> : <Skeleton width={300} height={50}></Skeleton>}
                             
                         </aside>
                     </FeedContainer>

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { useState } from "react";
 import { useCookies } from "react-cookie";
 import styled from "styled-components"
 import { globalColors } from "../pages/_app";
@@ -34,11 +35,14 @@ const StyledPage = styled.a`
             z-index: 0;
         }   
 `
-export default function UserCard({data}) {
+export default function UserCard({isFollow, data} : {isFollow?: boolean, data: any}) {
 const [cookies, ,] = useCookies(['user']);
+const [isFollowed, setIsFollowed] = useState(isFollow)
+const [followCounter, setFollowCounter] = useState(data.follower.length)
 const handleSub = async (e: any, followerId, followingId) => {
     e.preventDefault()
-    e.target.innerHTML = 'Suivi'
+    setIsFollowed(!isFollowed)
+    setFollowCounter(isFollowed ? followCounter - 1 : followCounter + 1)
     const response = await fetch(`/api/follow`, {
         method: 'POST',
         body: JSON.stringify({
@@ -47,8 +51,7 @@ const handleSub = async (e: any, followerId, followingId) => {
         })
     })
     const result = await response.json();
-    alert(result)
-    }
+  }
   return (
     <Link passHref href={`/profil/${data.id}`} key={data.id}>
         <StyledPage>
@@ -56,11 +59,11 @@ const handleSub = async (e: any, followerId, followingId) => {
                 <img src={data.avatar} alt="User avatar"></img>
                 <div>
                     <h3>{data.firstName + " " + data.lastName}</h3>
-                    <p>{data.follower.length} abonné{data.follower.length > 1 ? "s" : ""}</p>
+                    <p>{followCounter} abonné{followCounter.length > 1 ? "s" : ""}</p>
                 </div>
             </div>
             <Button onClick={(e) => handleSub(e, cookies.user.id, data.id)}>
-                Suivre
+                {!isFollowed ? 'Suivre' : 'Ne plus suivre'}
             </Button>
         </StyledPage>
     </Link>
