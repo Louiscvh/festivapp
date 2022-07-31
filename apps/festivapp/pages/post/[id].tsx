@@ -19,6 +19,10 @@ const StyledPage = styled.div`
         flex-direction: column;
     }
 
+    & > div {
+        width: 100%;
+    }
+
     & > div > h3 {
         margin-top: 2rem;
     }
@@ -102,9 +106,9 @@ export default function Post({postData}) {
                 <p>{post.description}</p>
                 <Like postId={post.id} userId={cookies.user?.id} setIsLiked={setIsLiked} isLiked={isLiked} likeCount={likeCount} setLikeCount={setLikeCount}></Like>
                 <section>
-                    <h2>Commentaire{post.comment.length > 1 ? "s" : ""} ({post.comment.length})</h2>
+                    <h2>Commentaire{postComment.length > 1 ? "s" : ""} ({postComment.length})</h2>
                     <form onSubmit={(e) => handleComment(e)}>
-                        <input type="text" placeholder="Commenter" onChange={(e) => setComment(e.target.value)}></input>
+                        <input type="text" placeholder="Commenter" value={comment} onChange={(e) => setComment(e.target.value)}></input>
                         <Button submit>
                             Publier
                         </Button>
@@ -147,6 +151,7 @@ export async function getServerSideProps(context: { query: { id: number } }) {
                 select: {
                     id: true,
                     content: true,
+                    createdAt: true,
                     author : {
                         select : {
                             firstName: true,
@@ -187,6 +192,6 @@ export async function getServerSideProps(context: { query: { id: number } }) {
     return {
       props : { postData }
     }
-  }
+}
     
 Post.getLayout = getLayout;

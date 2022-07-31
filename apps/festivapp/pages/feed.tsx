@@ -69,6 +69,10 @@ const StyledPage = styled.div`
                 display: none;
             }
         }
+
+        hr {
+            margin-top: 2rem;
+        }
     }
 `
 
@@ -104,9 +108,13 @@ export default function Feed() {
                     <h1>Mon Feed</h1>
                     <div>
                         <input type="text" name="" id="" placeholder='Rechercher' />
-                        <Button>
-                            +
-                        </Button>
+                        <Link href="/new">
+                            <a>
+                                <Button>
+                                    +
+                                </Button>
+                            </a>
+                        </Link>
                     </div>
                 </div>
                 <hr></hr>
@@ -130,6 +138,7 @@ export default function Feed() {
                                     </div>
                                 </a>
                             </Link>
+                            <hr></hr>
                             <Suggestions userFollow={user?.following}/>
                         </div> : <Skeleton width={300} height={50}></Skeleton>}
                             

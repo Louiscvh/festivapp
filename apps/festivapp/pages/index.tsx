@@ -9,7 +9,6 @@ import { getLayout } from '../layouts/MenuLayout';
 import { globalTransitions, globalColors } from './_app';
 
 const StyledPage = styled.div`
-height: 200vh;
   h1 {
     overflow: hidden;
     span {

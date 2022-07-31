@@ -10,7 +10,7 @@ export default function Button({children, link, submit, ...buttonProps}: {childr
         position: relative;
         padding: 12px 20px;
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         cursor: pointer;
         border: none;
         background: transparent;

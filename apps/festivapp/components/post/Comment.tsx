@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const StyledPage = styled.div`
     a {
-        padding: 10px;
+        padding: 1rem;
         background-color: ${globalColors.white};
         border-radius: 8px;
         gap: 1rem;
@@ -15,28 +15,38 @@ const StyledPage = styled.div`
         color: ${globalColors.black};
         & > div {
             display: flex;
-            align-items: center;
             gap: 1rem;
 
             img {
                 height: 30px;
+                margin-top: 10px;
+            }
+
+            time {
+                opacity: 0.5;
+                font-size: 0.8rem;
+            }
+
+            p {
+                margin-top: 1rem;
             }
         }
 }
 `
 export default function Comment({data}) {
+    console.log(data.createAt)
   return (
     <StyledPage>
         <Link href={`/profil/${data.id}`}>
             <a>
                 <div>
-                    <img src={data.author.avatar}></img>
+                    <img src={data.author.avatar} alt="User comment avatar"></img>
                     <div>
                         <h4>{data.author.firstName} {data.author.lastName}</h4>
                         <Moment locale="fr" fromNow>{data.createdAt}</Moment>
+                        <p>{data.content}</p>
                     </div>
                 </div>
-                <p>{data.content}</p>
             </a>
         </Link>
     </StyledPage>
