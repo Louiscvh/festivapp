@@ -36,7 +36,7 @@ const StyledPage = styled.div`
 export default function Comment({data}) {
   return (
     <StyledPage>
-        <Link href={`/profil/${data.id}`}>
+        <Link href={`/profil/${data.author.id}`}>
             <a>
                 <div>
                     <img src={data.author.avatar} alt="User comment avatar"></img>
