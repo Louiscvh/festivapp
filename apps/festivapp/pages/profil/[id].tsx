@@ -35,6 +35,10 @@ const StyledPage = styled.div`
       flex-wrap: wrap;
       margin-bottom: 1rem;
 
+      h4 {
+        margin-top: 0.5rem;
+      }
+
       img{
         height: 100px;
         aspect-ratio: 1/1;
@@ -101,7 +105,7 @@ export default function Profil({userData}) {
                   <img src={post.content} ></img>
                 </a>
               </Link>
-            )) : <h2>{user?.firstName} n&apos;a rien encore publié</h2>}
+            )) : <h4>{user?.firstName} n&apos;a encore rien publié</h4>}
           </div>
           {canShare ? <Button onClick={(e: Event) => handleShare(e)}>
             Partager ce profil
