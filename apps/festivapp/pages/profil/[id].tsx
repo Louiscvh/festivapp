@@ -101,7 +101,7 @@ export default function Profil({userData}) {
                   <img src={post.content} ></img>
                 </a>
               </Link>
-            )) : `<h2>${user?.firstName} n'a rien encore publié</h2>`}
+            )) : <h2>{user?.firstName} n'a rien encore publié</h2>}
           </div>
           {canShare ? <Button onClick={(e: Event) => handleShare(e)}>
             Partager ce profil
