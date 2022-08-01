@@ -58,7 +58,7 @@ const handleSub = async (e: any, followerId, followingId) => {
             <div>
                 <img src={data.avatar} alt="User avatar"></img>
                 <div>
-                    <h3>{data.firstName + " " + data.lastName}</h3>
+                    <h4>{data.firstName + " " + data.lastName}</h4>
                     <p>{followCounter} abonné{followCounter.length > 1 ? "s" : ""}</p>
                 </div>
             </div>
