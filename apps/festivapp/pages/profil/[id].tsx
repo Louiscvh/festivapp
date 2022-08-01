@@ -52,7 +52,6 @@ export default function Profil({userData}) {
     setUser(userData)
     if(navigator.share) setCanShare(true)
   }, [userData])
-  console.log(userData)
 
   const handleShare = (e: Event) => {
     e.preventDefault();
@@ -153,7 +152,8 @@ export async function getStaticProps({params}) {
     })
     const userData = JSON.parse(JSON.stringify(request))
     return {
-      props : { userData }
+      props : { userData },
+      revalidate: 10
     }
   }
     
