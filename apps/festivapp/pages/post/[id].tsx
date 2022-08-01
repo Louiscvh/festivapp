@@ -202,7 +202,7 @@ export async function getStaticProps({ params }) {
     const postData = JSON.parse(JSON.stringify(request))
     return {
       props : { postData },
-      revalidate: 10
+      revalidate: 100
     }
 }
     
