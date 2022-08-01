@@ -113,13 +113,27 @@ export default function Profil({userData}) {
   )
 }
 
-export async function getServerSideProps(context: { query: { id: number } }) {
+
+export async function getStaticPaths() {
+  const prisma = new PrismaClient();
+  const users = await prisma.user.findMany();
+
+  return {
+    paths: users.map((user) => ({
+      params: {
+        id: user.id.toString()
+      }
+    })),
+    fallback: false
+  };
+}
+
+export async function getStaticProps({params}) {
     const prisma = new PrismaClient()
-    const id = context.query.id
 
     const request = await prisma.user.findFirst({
         where: {
-            id: Number(id)
+            id: Number(params.id)
         },
         select: {
             id: true,
