@@ -6,7 +6,6 @@ const prisma = new PrismaClient()
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if(req.method == "POST") {
         const {comment, postId, authorId} = JSON.parse(req.body)
-        console.log(comment, postId, authorId)
         if(comment) {
             try {
                 await prisma.comment.create({

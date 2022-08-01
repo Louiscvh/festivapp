@@ -34,7 +34,6 @@ const StyledPage = styled.div`
 }
 `
 export default function Comment({data}) {
-    console.log(data.createAt)
   return (
     <StyledPage>
         <Link href={`/profil/${data.id}`}>

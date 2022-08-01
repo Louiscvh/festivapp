@@ -24,7 +24,6 @@ export default function Suggestions({userFollow}) {
         .then(response => response.json())
         .then(data => setSuggestions(data)) 
     }, [cookies])
-    console.log(userFollow)
   return (
     <StyledPage>
         <section>

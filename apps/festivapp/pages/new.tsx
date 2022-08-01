@@ -6,6 +6,7 @@ import { globalColors } from './_app';
 import { PrismaClient } from '@prisma/client';
 import { useState } from 'react';
 import NewPreview from '../components/new/NewPreview';
+import { InferGetStaticPropsType } from 'next';
 
 const StyledPage = styled.div`
 margin-bottom: 2rem;
@@ -65,7 +66,7 @@ form {
     }
 }
 `
-export default function New({festivals}) {
+export default function New({festivals}: InferGetStaticPropsType<typeof getStaticProps>) {
 
     const [picture, setPicture] = useState(null);
     const [description, setDescription] = useState('');
@@ -120,7 +121,8 @@ export default function New({festivals}) {
   )
 }
 
-export async function getServerSideProps() {
+    
+export async function getStaticProps() {
     const prisma = new PrismaClient()
 
     const request = await prisma.festival.findMany()

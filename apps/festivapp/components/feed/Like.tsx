@@ -15,17 +15,13 @@ export default function Like({isLiked, setIsLiked, likeCount, setLikeCount, post
         e.preventDefault()
         setIsLiked(!isLiked)
         setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
-        const response = await fetch(`/api/like`, {
+        await fetch(`/api/like`, {
             method: 'POST',
             body: JSON.stringify({
                 postId,
                 userId
             })
         })
-        const result = await response.json()
-        if(response.ok) {
-            console.log(result)
-        }
         
     }
   return (

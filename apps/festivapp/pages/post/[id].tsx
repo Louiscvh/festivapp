@@ -81,7 +81,6 @@ export default function Post({postData}) {
     useEffect(() => {
         setIsLiked(postData.like.some( like => like['authorId'] == cookies.user?.id))
     }, [postData.like, cookies.user?.id] )
-    console.log(postComment)
 
     const handleComment = async(e) => {
         e.preventDefault()
@@ -127,14 +126,26 @@ export default function Post({postData}) {
   )
 }
 
+export async function getStaticPaths() {
+    const prisma = new PrismaClient();
+    const posts = await prisma.post.findMany();
+  
+    return {
+      paths: posts.map((post) => ({
+        params: {
+          id: post.id.toString()
+        }
+      })),
+      fallback: false
+    };
+  }
 
-export async function getServerSideProps(context: { query: { id: number } }) {
+export async function getStaticProps({ params }) {
     const prisma = new PrismaClient()
-    const id = context.query.id
 
     const request = await prisma.post.findFirst({
         where: {
-            id: Number(id),
+            id: Number(params.id),
         },
         select: {
             id: true,

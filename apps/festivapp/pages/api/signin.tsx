@@ -6,7 +6,6 @@ const prisma = new PrismaClient()
 
 export default async function Signin(req: NextApiRequest, res: NextApiResponse) {
     if(req.method == "POST") {
-        console.log(req.body)
         const { firstName, lastName, birth, email, password} = JSON.parse(req.body)
         if(!firstName || !lastName || !birth || !email || !password) {
             res.status(500).json('Veuillez remplir tous les champs')
