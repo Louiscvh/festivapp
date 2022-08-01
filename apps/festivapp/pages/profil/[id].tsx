@@ -30,6 +30,7 @@ const StyledPage = styled.div`
   }
 
   #profil__post {
+    margin-bottom: 2rem;
     div {
       display: flex;
       flex-wrap: wrap;
