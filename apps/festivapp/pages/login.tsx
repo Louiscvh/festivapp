@@ -29,7 +29,7 @@ export default function Login() {
         })
         const result = await response.json();
         if(response.ok){
-            setCookie('user', result, { path: '/' });
+            setCookie('user', result, { path: '/', secure: true }, );
             router.push('/feed')
         } else {
             alert(result)

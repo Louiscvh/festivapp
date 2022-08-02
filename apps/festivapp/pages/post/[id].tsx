@@ -10,7 +10,8 @@ import { globalColors } from '../_app';
 import Button from '../../components/Button';
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
-
+import { useRouter } from 'next/router';
+import Skeleton from '../../components/Skeleton';
 const StyledPage = styled.div`
     display: flex;
     gap: 2rem;
@@ -39,6 +40,12 @@ const StyledPage = styled.div`
         @media screen and (max-width: 1024px) {
             width: 100%;
         }
+    }
+
+    .post__options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     section {
@@ -71,139 +78,91 @@ const StyledPage = styled.div`
         }
     }
 `
-export default function Post({postData}) {
-    const [post, setPost] = useState(postData)
-    const [likeCount, setLikeCount] = useState(postData.like.length)
+export default function Post() {
+    const [post, setPost] = useState(null)
+    const [likeCount, setLikeCount] = useState(null)
     const [isLiked, setIsLiked] = useState(null)
     const [cookies, , ] = useCookies(['user']);
-    const [postComment, setPostComment] = useState(postData.comment)
+    const [postComment, setPostComment] = useState(null)
     const [comment, setComment] = useState('')
+
+    const router = useRouter()
+ 
     useEffect(() => {
-        setIsLiked(postData.like.some( like => like['authorId'] == cookies.user?.id))
-    }, [postData.like, cookies.user?.id] )
+        const fetchData = async () => {
+            fetch(`/api/post/${router.query.id}`)
+            .then(r => r.json())
+            .then(data => {
+                setPost(data)
+                setPostComment(data.comment.sort((a, b) => { return b.id - a.id; }))
+                setLikeCount(data.like.length)
+                setIsLiked(data?.like?.some(like => like['authorId'] == cookies.user?.id))
+            })
+            }
+        fetchData()
+    }, [router])
 
     const handleComment = async(e) => {
         e.preventDefault()
         setComment('')
-        setPostComment(oldArray => [...oldArray,{content: comment, author: {firstName: cookies.user?.firstName, lastName:cookies.user?.lastName, avatar: cookies.user?.avatar}}] );
+        setPostComment(oldArray => [{content: comment, author: {firstName: cookies.user?.firstName, lastName:cookies.user?.lastName, avatar: cookies.user?.avatar}}, ...oldArray] );
         await fetch(`/api/comment/createComment`, {
             method: 'POST',
             body: JSON.stringify({
                 comment,
-                postId: postData.id,
+                postId: post.id,
                 authorId: cookies.user?.id
             })
         })
+        console.log(postComment)
+    }
+
+    const handleDelete = (e, postId) => {
+        e.preventDefault()
+        fetch(`/api/post/deletePost/`, {
+            method: 'POST',
+            body: JSON.stringify({
+                postId
+            })
+        })
+        router.push('/feed')
     }
   return (
     <Container>
         <StyledPage>
-            <img src={post.content}></img>
-            <div>
-                <UserCard isFollow={postData.author.follower.some( follower => follower['followerId'] == cookies.user?.id)} data={post.author}></UserCard>
-                <h3>{post.festival.name} - {post.location}</h3>
-                <p>{post.description}</p>
-                <Like postId={post.id} userId={cookies.user?.id} setIsLiked={setIsLiked} isLiked={isLiked} likeCount={likeCount} setLikeCount={setLikeCount}></Like>
-                <section>
-                    <h2>Commentaire{postComment.length > 1 ? "s" : ""} ({postComment.length})</h2>
-                    <form onSubmit={(e) => handleComment(e)}>
-                        <input type="text" placeholder="Commenter" value={comment} onChange={(e) => setComment(e.target.value)}></input>
-                        <Button submit>
-                            Publier
-                        </Button>
-                    </form>
-                    <div>
-                        {postComment.map((comment, index) => (
-                            <div key={index}>
-                            <Comment data={comment} />
-                            </div>
-                        ))}
+            {post ?
+            <>
+                <img src={post.content}></img>
+                <div>
+                    <UserCard isFollow={post.author?.follower.some( follower => follower['followerId'] == cookies.user?.id)} data={post.author}></UserCard>
+                    <h3>{post.festival?.name} - {post.location}</h3>
+                    <p>{post.description}</p>
+                    <div className="post__options">
+                        <Like postId={post.id} userId={cookies.user?.id} setIsLiked={setIsLiked} isLiked={isLiked} likeCount={likeCount} setLikeCount={setLikeCount}></Like>
+                        {post.author?.id == cookies.user?.id && <Button onClick={(e) => handleDelete(e, post.id)}>Supprimer mon post</Button>}
                     </div>
-                </section>
-            </div>
+                    <section>
+                        <h2>Commentaire{postComment?.length > 1 ? "s" : ""} ({postComment?.length})</h2>
+                        <form onSubmit={(e) => handleComment(e)}>
+                            <input type="text" placeholder="Commenter" value={comment} onChange={(e) => setComment(e.target.value)}></input>
+                            <Button submit>
+                                Publier
+                            </Button>
+                        </form>
+                        <div>
+                            {postComment?.map((comment, index) => (
+                                <div key={index}>
+                                <Comment data={comment} setPostComment={setPostComment} postComment={postComment}/>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                </div>
+            </> 
+            : <Skeleton width={700} height={500}></Skeleton>}
         </StyledPage>
     </Container>
   )
-}
-
-export async function getStaticPaths() {
-    const prisma = new PrismaClient();
-    const posts = await prisma.post.findMany();
-  
-    return {
-      paths: posts.map((post) => ({
-        params: {
-          id: post.id.toString()
-        }
-      })),
-      fallback: false
-    };
-  }
-
-export async function getStaticProps({ params }) {
-    const prisma = new PrismaClient()
-
-    const request = await prisma.post.findFirst({
-        where: {
-            id: Number(params.id),
-        },
-        select: {
-            id: true,
-            content: true,
-            description: true,
-            location: true,
-            createdAt: true,
-            festival: {
-                select: {
-                    name: true
-                }
-            },
-            comment : {
-                select: {
-                    id: true,
-                    content: true,
-                    createdAt: true,
-                    author : {
-                        select : {
-                            firstName: true,
-                            lastName: true,
-                            avatar: true,
-                            id: true
-                        }
-                    }
-                }
-            },
-            like: {
-                select: {
-                    id: true,
-                    authorId: true,
-                    author: {
-                        select: {
-                            id: true,
-                            firstName: true,
-                            lastName: true,
-                            avatar: true,
-                        }
-                    }
-                }
-            },
-            author: {
-                select: {
-                    id: true,
-                    firstName: true,
-                    lastName: true,
-                    avatar: true,
-                    follower: true
-                }
-            },
-            authorId: true
-        }
-    })
-    const postData = JSON.parse(JSON.stringify(request))
-    return {
-      props : { postData },
-      revalidate: 100
-    }
 }
     
 Post.getLayout = getLayout;

@@ -21,6 +21,11 @@ const StyledPage = styled.a`
             display: flex;
             align-items: center;
             gap: 1rem;
+
+            & > div {
+                flex-direction: column;
+                display: flex;
+            }
         }
 
         h5 {
@@ -50,31 +55,32 @@ const StyledPage = styled.a`
 export default function UserCard({isFollow, data} : {isFollow?: boolean, data: any}) {
 const [cookies, ,] = useCookies(['user']);
 const [isFollowed, setIsFollowed] = useState(isFollow)
-const [followCounter, setFollowCounter] = useState(data.follower.length)
-const handleSub = async (e: any, followerId, followingId) => {
+const [followCounter, setFollowCounter] = useState(data?.follower?.length)
+const handleSub = async (e: any, followingId) => {
     e.preventDefault()
     setIsFollowed(!isFollowed)
     setFollowCounter(isFollowed ? followCounter - 1 : followCounter + 1)
     await fetch(`/api/follow`, {
         method: 'POST',
         body: JSON.stringify({
-            followerId,
+            followerId: cookies.user?.id,
             followingId
         })
     })
   }
+
   return (
-    <Link passHref href={`/profil/${data.id}`} key={data.id}>
+    <Link passHref href={`/profil/${data?.id}`} key={data?.id}>
         <StyledPage>
             <div>
-                <img src={data.avatar} alt="User avatar"></img>
+                <img src={data?.avatar} alt="User avatar"></img>
                 <div>
-                    <h5>{data.firstName + " " + data.lastName}</h5>
-                    <p>{followCounter} abonné{followCounter.length > 1 ? "s" : ""}</p>
+                    <h5>{data?.firstName + " " + data?.lastName}</h5>
+                    <p>{followCounter} abonné{followCounter > 1 ? "s" : ""}</p>
                 </div>
             </div>
-            {data.id != cookies.user?.id ? 
-            <Button onClick={(e) => handleSub(e, cookies.user.id, data.id)}>
+            {data?.id != cookies.user?.id ? 
+            <Button onClick={(e) => handleSub(e, data?.id)}>
                 {!isFollowed ? 'Suivre' : 'Ne plus suivre'}
             </Button> : null}
         </StyledPage>

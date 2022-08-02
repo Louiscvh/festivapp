@@ -21,6 +21,6 @@ const StyledPage = styled.div`
 
 export default function Skeleton({width, height}) {
   return (
-    <StyledPage style={{width: `${width}px`, height: `${height}px`}}></StyledPage>
+    <StyledPage style={{maxWidth: `${width}px`, height: `${height}px`}}></StyledPage>
   )
 }

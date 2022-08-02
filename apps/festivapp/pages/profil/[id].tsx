@@ -8,7 +8,27 @@ import Button from '../../components/Button';
 import Head from 'next/head';
 import Link from 'next/link';
 import Skeleton from '../../components/Skeleton';
+import { useCookies } from 'react-cookie';
 const StyledPage = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  section {
+    max-width: 600px;
+    background-color: ${globalColors.white};
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  .profil__header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    button {
+      z-index: 1;
+    }
+  }
+
   img {
     height: 80px;
     margin-top: 1rem;
@@ -24,7 +44,7 @@ const StyledPage = styled.div`
     div {
       padding: 10px;
       border-radius: 8px;
-      background-color: ${globalColors.white};
+      background-color: ${globalColors.darkGrey};
     }
   }
 
@@ -58,12 +78,18 @@ const StyledPage = styled.div`
 export default function Profil() {
   const [user, setUser] = useState(null);
   const [canShare, setCanShare] = useState(false);
-
+  const [cookies, ,] = useCookies(['user']);
+  const [isFollow, setIsFollow] = useState(null);
+  const [followCounter, setFollowCounter] = useState(0)
   const router = useRouter()
   useEffect(() => {
     fetch(`/api/user/${router.query.id}`)
     .then(r => r.json())
-    .then(data => setUser(data))
+    .then(data => {
+      setUser(data)
+      setIsFollow(data.follower.some(follow => follow['followerId'] == cookies.user?.id))
+      setFollowCounter(data.follower.length)
+    })
     if(navigator.share) setCanShare(true)
   }, [router])
 
@@ -78,6 +104,22 @@ export default function Profil() {
     }
   }
 
+  const handleSub = async (e: any, followingId) => {
+    e.preventDefault()
+    setIsFollow(!isFollow)
+    setFollowCounter(isFollow ? followCounter - 1 : followCounter + 1)
+
+    await fetch(`/api/follow`, {
+        method: 'POST',
+        body: JSON.stringify({
+            followerId: cookies.user?.id,
+            followingId
+        })
+    })
+  }
+
+  console.log(followCounter)
+
   return (
     <Container>
       <Head>
@@ -87,12 +129,15 @@ export default function Profil() {
       {user ? 
         <>
           <section>
-            <h1>{user?.firstName} {user?.lastName}</h1>
+            <div className="profil__header">
+              <h1>{user?.firstName} {user?.lastName}</h1>
+              {user?.id == cookies.user?.id ? <Button>Modifier mon profil</Button> : <Button onClick={(e) => handleSub(e, user?.id)}>{isFollow ? "Ne plus suivre" : "Suivre"}</Button>}
+            </div>
             <img src={user?.avatar} alt='User avatar'></img>
             <div className="user__stats">
                 <div>
-                  <h2>{user?.follower.length}</h2>
-                  <p>Abonné{user?.follower.length > 1 ? "s" : ""}</p>
+                  <h2>{followCounter || "-"}</h2>
+                  <p>Abonné{followCounter > 1 ? "s" : ""}</p>
                 </div>
                 <div>
                   <h2>{user?.following.length}</h2>
@@ -109,7 +154,7 @@ export default function Profil() {
             </div>
           </section>
           <section id='profil__post'>
-            <h2>Post{user?.post.length > 1 ? "s" : ""} de {user?.firstName}</h2>
+            <h2>{user?.id != cookies.user?.id ? `Post${user?.post.length > 1 ? "s" : ""} de ${user?.firstName}`: `Mes posts`}</h2>
             <div className='profil__post__container'>
               {user?.post.length ? user?.post.map((post, index) => (
                 <Link href={`/post/${post.id}`} key={index}>

@@ -90,10 +90,10 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
             method: "POST",
             body: formData
         }).then(r => r.json())
-        console.log('bien posté', request.secure_url)
+        console.log('bien posté', request)
         if(request.secure_url) {
             try {
-                const newRequest = await fetch('/api/post/createPost', {
+                await fetch('/api/post/createPost', {
                     method: 'POST',
                     body: JSON.stringify({
                         description,
@@ -158,7 +158,6 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
   )
 }
 
-    
 export async function getStaticProps() {
     const prisma = new PrismaClient()
 

@@ -62,10 +62,10 @@ export default function Post({userLike, data}) {
     const [isLiked, setIsLiked] = useState(null);
 
    useEffect(() => {
-    setIsLiked(userLike?.some( like => like['authorId'] == cookies.user?.id))
+    setIsLiked(userLike?.some( like => like['postId'] == data.id))
    }, [userLike, cookies.user])
-   console.log(data)
 
+   console.log(userLike, data.id)
   return (
     <StyledPage>
         <div>

@@ -3,6 +3,7 @@ import Moment from 'react-moment';
 import 'moment/locale/fr';
 import { globalColors } from '../../pages/_app';
 import Link from "next/link";
+import Button from "../Button";
 
 const StyledPage = styled.div`
     a {
@@ -11,8 +12,9 @@ const StyledPage = styled.div`
         border-radius: 8px;
         gap: 1rem;
         display: flex;
-        flex-direction: column;
         color: ${globalColors.black};
+        justify-content: space-between;
+        align-items: flex-start;
         & > div {
             display: flex;
             gap: 1rem;
@@ -31,9 +33,25 @@ const StyledPage = styled.div`
                 margin-top: 1rem;
             }
         }
+
+        button {
+            z-index: 1;
+        }
 }
 `
-export default function Comment({data}) {
+export default function Comment({data, setPostComment, postComment}) {
+
+    const handleDelete = (e, commentId) => {
+        e.preventDefault()
+        fetch(`/api/comment/deleteComment`, {
+            method: 'POST',
+            body: JSON.stringify({
+                commentId
+            })
+        })
+        const newComment = postComment.filter((comment) => comment.id !== commentId);
+        setPostComment( newComment);
+    }
   return (
     <StyledPage>
         <Link href={`/profil/${data.author.id}`}>
@@ -46,6 +64,7 @@ export default function Comment({data}) {
                         <p>{data.content}</p>
                     </div>
                 </div>
+                <Button onClick={(e) => handleDelete(e, data.id)}>Supprimer</Button>
             </a>
         </Link>
     </StyledPage>

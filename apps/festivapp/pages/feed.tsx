@@ -49,6 +49,8 @@ const StyledPage = styled.div`
         gap: 3rem;
     }
     aside {
+        position: sticky;
+        top: 100px;
         min-width: 400px;
         & > div > a{
             display: flex;

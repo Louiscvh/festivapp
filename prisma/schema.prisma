@@ -19,6 +19,7 @@ model User {
   password     String
   role         Role     @default(USER)
   avatar       String?
+  bio          String?
   createdAt    DateTime @default(now())
   modifiedAt   DateTime @default(now())
   follower     Follow[] @relation("following")
@@ -40,7 +41,7 @@ model Post {
   festival     Festival @relation(fields: [festivalId], references: [id])
   festivalId   Int
   like         Like[] @relation("postLike")
-  comment      Comment[] @relation("postComment")
+  comment      Comment[] @relation("postComment") 
 }
 
 model Festival {
@@ -74,7 +75,7 @@ model Comment {
   id          Int  @id @default(autoincrement())
   author      User @relation("userComment", fields: [authorId], references: [id])
   authorId    Int
-  post        Post @relation("postComment", fields: [postId], references: [id])
+  post        Post @relation("postComment", fields: [postId], references: [id], onDelete: Cascade)
   postId      Int
   content     String
   createdAt   DateTime @default(now())
