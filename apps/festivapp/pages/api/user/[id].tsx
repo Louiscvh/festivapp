@@ -17,7 +17,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 lastName: true,
                 follower: true,
                 following: true,
-                bio: true,
                 like: {
                     select: {
                         authorId: true,
