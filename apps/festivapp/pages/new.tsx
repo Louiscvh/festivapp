@@ -92,18 +92,20 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
         }).then(r => r.json())
         console.log('bien posté', request.secure_url)
         if(request.secure_url) {
-            const newRequest = await fetch('/api/post/createPost', {
-                method: 'POST',
-                body: JSON.stringify({
-                    description,
-                    content: request.secure_url,
-                    location,
-                    userId: cookies.user?.id,
-                    festival
+            try {
+                const newRequest = await fetch('/api/post/createPost', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        description,
+                        content: request.secure_url,
+                        location,
+                        userId: cookies.user?.id,
+                        festival
+                    })
                 })
-            })
-            if(newRequest.ok) {
                 router.push('/feed')
+            } catch(e) {
+                alert(e)
             }
         }
     }
