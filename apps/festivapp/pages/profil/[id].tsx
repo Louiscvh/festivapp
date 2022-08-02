@@ -30,10 +30,15 @@ const StyledPage = styled.div`
   }
 
   #profil__post {
+    margin-bottom: 2rem;
     div {
       display: flex;
       flex-wrap: wrap;
       margin-bottom: 1rem;
+
+      h4 {
+        margin-top: 0.5rem;
+      }
 
       img{
         height: 100px;
@@ -52,7 +57,6 @@ export default function Profil({userData}) {
     setUser(userData)
     if(navigator.share) setCanShare(true)
   }, [userData])
-  console.log(userData)
 
   const handleShare = (e: Event) => {
     e.preventDefault();
@@ -96,13 +100,13 @@ export default function Profil({userData}) {
         <section id='profil__post'>
           <h2>Post{user?.post.length > 1 ? "s" : ""} de {user?.firstName}</h2>
           <div>
-            {user?.post.map((post, index) => (
+            {!user?.post ? user?.post.map((post, index) => (
               <Link href={`/post/${post.id}`} key={index}>
                 <a>
                   <img src={post.content} ></img>
                 </a>
               </Link>
-            ))}
+            )) : <h4>{user?.firstName} n&apos;a encore rien publié</h4>}
           </div>
           {canShare ? <Button onClick={(e: Event) => handleShare(e)}>
             Partager ce profil
@@ -113,13 +117,27 @@ export default function Profil({userData}) {
   )
 }
 
-export async function getServerSideProps(context: { query: { id: number } }) {
+
+export async function getStaticPaths() {
+  const prisma = new PrismaClient();
+  const users = await prisma.user.findMany();
+
+  return {
+    paths: users.map((user) => ({
+      params: {
+        id: user.id.toString()
+      }
+    })),
+    fallback: false
+  };
+}
+
+export async function getStaticProps({params}) {
     const prisma = new PrismaClient()
-    const id = context.query.id
 
     const request = await prisma.user.findFirst({
         where: {
-            id: Number(id)
+            id: Number(params.id)
         },
         select: {
             id: true,
@@ -139,7 +157,8 @@ export async function getServerSideProps(context: { query: { id: number } }) {
     })
     const userData = JSON.parse(JSON.stringify(request))
     return {
-      props : { userData }
+      props : { userData },
+      revalidate: 100
     }
   }
     

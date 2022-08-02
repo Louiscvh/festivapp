@@ -73,9 +73,10 @@ const handleSub = async (e: any, followerId, followingId) => {
                     <p>{followCounter} abonné{followCounter.length > 1 ? "s" : ""}</p>
                 </div>
             </div>
+            {data.id != cookies.user?.id ? 
             <Button onClick={(e) => handleSub(e, cookies.user.id, data.id)}>
                 {!isFollowed ? 'Suivre' : 'Ne plus suivre'}
-            </Button>
+            </Button> : null}
         </StyledPage>
     </Link>
   )
