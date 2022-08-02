@@ -21,6 +21,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     select: {
                         authorId: true
                     }
+                },
+                post:{
+                    select : {
+                        id: true,
+                        content: true,
+                    }
                 }
             }
         })

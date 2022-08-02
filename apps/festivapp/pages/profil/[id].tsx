@@ -1,14 +1,13 @@
 import { useRouter } from 'next/router';
-import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
 import Container from '../../components/Container';
 import { getLayout } from '../../layouts/MenuLayout';
-import { PrismaClient } from '@prisma/client';
 import { useState, useEffect } from 'react';
 import { globalColors } from '../_app';
 import Button from '../../components/Button';
 import Head from 'next/head';
 import Link from 'next/link';
+import Skeleton from '../../components/Skeleton';
 const StyledPage = styled.div`
   img {
     height: 80px;
@@ -50,13 +49,17 @@ const StyledPage = styled.div`
   }
 `;
 
-export default function Profil({userData}) {
+export default function Profil() {
   const [user, setUser] = useState(null);
   const [canShare, setCanShare] = useState(false);
+
+  const router = useRouter()
   useEffect(() => {
-    setUser(userData)
+    fetch(`/api/user/${router.query.id}`)
+    .then(r => r.json())
+    .then(data => setUser(data))
     if(navigator.share) setCanShare(true)
-  }, [userData])
+  }, [router])
 
   const handleShare = (e: Event) => {
     e.preventDefault();
@@ -69,99 +72,56 @@ export default function Profil({userData}) {
     }
   }
 
-  console.log(user)
-
   return (
     <Container>
       <Head>
         <title>Festivapp | {user?.firstName} {user?.lastName} </title>
       </Head>
       <StyledPage>
-        <section>
-          <h1>{user?.firstName} {user?.lastName}</h1>
-          <img src={user?.avatar} alt='User avatar'></img>
-          <div className="user__stats">
-              <div>
-                <h2>{user?.follower.length}</h2>
-                <p>Abonné{user?.follower.length > 1 ? "s" : ""}</p>
-              </div>
-              <div>
-                <h2>{user?.following.length}</h2>
-                <p>Abonnement{user?.following.length > 1 ? "s" : ""}</p>
-              </div>
-              <div>
-                <h2>{user?.post.length}</h2>
-                <p>Post{user?.post.length > 1 ? "s" : ""} publié{user?.post.length > 1 ? "s" : ""}</p>
-              </div>
-              <div>
-                <h2>{user?.like.length}</h2>
-                <p>Post{user?.like.length > 1 ? "s" : ""} liké{user?.like.length > 1 ? "s" : ""}</p>
-              </div>
-          </div>
-        </section>
-        <section id='profil__post'>
-          <h2>Post{user?.post.length > 1 ? "s" : ""} de {user?.firstName}</h2>
-          <div>
-            {user?.post.length ? user?.post.map((post, index) => (
-              <Link href={`/post/${post.id}`} key={index}>
-                <a>
-                  <img src={post.content} ></img>
-                </a>
-              </Link>
-            )) : <h4>{user?.firstName} n&apos;a encore rien publié</h4>}
-          </div>
-          {canShare ? <Button onClick={(e: Event) => handleShare(e)}>
-            Partager ce profil
-          </Button> : ""}
-        </section>
+      {user ? 
+        <>
+          <section>
+            <h1>{user?.firstName} {user?.lastName}</h1>
+            <img src={user?.avatar} alt='User avatar'></img>
+            <div className="user__stats">
+                <div>
+                  <h2>{user?.follower.length}</h2>
+                  <p>Abonné{user?.follower.length > 1 ? "s" : ""}</p>
+                </div>
+                <div>
+                  <h2>{user?.following.length}</h2>
+                  <p>Abonnement{user?.following.length > 1 ? "s" : ""}</p>
+                </div>
+                <div>
+                  <h2>{user?.post.length}</h2>
+                  <p>Post{user?.post.length > 1 ? "s" : ""} publié{user?.post.length > 1 ? "s" : ""}</p>
+                </div>
+                <div>
+                  <h2>{user?.like.length}</h2>
+                  <p>Post{user?.like.length > 1 ? "s" : ""} liké{user?.like.length > 1 ? "s" : ""}</p>
+                </div>
+            </div>
+          </section>
+          <section id='profil__post'>
+            <h2>Post{user?.post.length > 1 ? "s" : ""} de {user?.firstName}</h2>
+            <div>
+              {user?.post.length ? user?.post.map((post, index) => (
+                <Link href={`/post/${post.id}`} key={index}>
+                  <a>
+                    <img src={post.content} ></img>
+                  </a>
+                </Link>
+              )) : <h4>{user?.firstName} n&apos;a encore rien publié</h4>}
+            </div>
+            {canShare ? <Button onClick={(e: Event) => handleShare(e)}>
+              Partager ce profil
+            </Button> : ""}
+          </section>
+        </>
+        : <Skeleton width={500} height={500}></Skeleton>}
       </StyledPage>
     </Container>
   )
 }
 
-
-export async function getStaticPaths() {
-  const prisma = new PrismaClient();
-  const users = await prisma.user.findMany();
-
-  return {
-    paths: users.map((user) => ({
-      params: {
-        id: user.id.toString()
-      }
-    })),
-    fallback: false
-  };
-}
-
-export async function getStaticProps({params}) {
-    const prisma = new PrismaClient()
-
-    const request = await prisma.user.findFirst({
-        where: {
-            id: Number(params.id)
-        },
-        select: {
-            id: true,
-            avatar: true,
-            firstName: true,
-            lastName: true,
-            follower: true,
-            following: true,
-            like: true,
-            post: {
-                select: {
-                    id: true,
-                    content: true
-                }
-            }
-        }
-    })
-    const userData = JSON.parse(JSON.stringify(request))
-    return {
-      props : { userData },
-      revalidate: 100
-    }
-  }
-    
 Profil.getLayout = getLayout;
