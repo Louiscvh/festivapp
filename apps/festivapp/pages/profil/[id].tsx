@@ -69,6 +69,8 @@ export default function Profil({userData}) {
     }
   }
 
+  console.log(user)
+
   return (
     <Container>
       <Head>
@@ -100,7 +102,7 @@ export default function Profil({userData}) {
         <section id='profil__post'>
           <h2>Post{user?.post.length > 1 ? "s" : ""} de {user?.firstName}</h2>
           <div>
-            {!user?.post ? user?.post.map((post, index) => (
+            {user?.post ? user?.post.map((post, index) => (
               <Link href={`/post/${post.id}`} key={index}>
                 <a>
                   <img src={post.content} ></img>
