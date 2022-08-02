@@ -46,6 +46,12 @@ const StyledPage = styled.div`
         border-radius: 8px;
       }
     }
+
+    .profil__post__container {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
   }
 `;
 
@@ -104,7 +110,7 @@ export default function Profil() {
           </section>
           <section id='profil__post'>
             <h2>Post{user?.post.length > 1 ? "s" : ""} de {user?.firstName}</h2>
-            <div>
+            <div className='profil__post__container'>
               {user?.post.length ? user?.post.map((post, index) => (
                 <Link href={`/post/${post.id}`} key={index}>
                   <a>
