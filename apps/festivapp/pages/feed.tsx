@@ -12,6 +12,7 @@ import Skeleton from '../components/Skeleton';
 import Link from 'next/link';
 import Suggestions from '../components/feed/Suggestions';
 import Head from 'next/head';
+import Filters from '../components/feed/Filters';
 
 const StyledPage = styled.div`
     .feed__header {
@@ -96,7 +97,6 @@ export default function Feed() {
         .then(response => response.json())
         .then(data => setUser(data)) 
     }, [cookies])
-    console.log(feed)
   return (
     <>
         <Head>
@@ -118,6 +118,7 @@ export default function Feed() {
                     </div>
                 </div>
                 <hr></hr>
+                <Filters />
                 <div className='feed__container'>
                     <FeedContainer>
                     {feed.length ?

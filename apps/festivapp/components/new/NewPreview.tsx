@@ -52,7 +52,6 @@ export default function NewPreview({picture, description, location, festival, li
             setCurrentUser(cookies.user)
         }
     }, [cookies.user])
-    console.log(likeVisible)
 
   return (
     <StyledPage>

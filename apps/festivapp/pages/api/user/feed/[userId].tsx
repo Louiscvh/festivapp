@@ -7,14 +7,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if(req.method == "GET") {
         const { userId } = req.query
         const request = await prisma.post.findMany({
+            orderBy: {
+                createdAt: "desc"
+            },
             where :{
-                author: {
-                    follower: {
-                        some: {
-                            followerId: Number(userId)
+                "OR" : [{
+                    author: {
+                        follower: {
+                            some: {
+                                followerId: Number(userId)
+                            }
                         }
+                    },
+                },
+                {
+                    author: {
+                        id: Number(userId)
                     }
                 }
+            ]
             },
             select:{
                 id: true,

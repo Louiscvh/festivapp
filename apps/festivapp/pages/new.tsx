@@ -7,6 +7,9 @@ import { PrismaClient } from '@prisma/client';
 import { useState } from 'react';
 import NewPreview from '../components/new/NewPreview';
 import { InferGetStaticPropsType } from 'next';
+import { json } from 'stream/consumers';
+import { useCookies } from 'react-cookie';
+import { useRouter } from 'next/router';
 
 const StyledPage = styled.div`
 margin-bottom: 2rem;
@@ -67,19 +70,51 @@ form {
 }
 `
 export default function New({festivals}: InferGetStaticPropsType<typeof getStaticProps>) {
-
+    const [cookies, setCookies ,] = useCookies(['user'])
     const [picture, setPicture] = useState(null);
     const [description, setDescription] = useState('');
     const [location, setLocation] = useState('')
     const [festival, setFestival] = useState(null);
     const [likeVisible, setLikeVisible] = useState('true');
-  return (
+
+    const router = useRouter()
+
+    const handleSubmit = async(e) => {
+        e.preventDefault()
+        
+        const formData = new FormData()
+        formData.append('file', picture?.pictureAsFile)
+        formData.append('upload_preset', 'fbbgz8oc')
+
+        const request = await fetch('https://api.cloudinary.com/v1_1/dymgd55eu/image/upload', {
+            method: "POST",
+            body: formData
+        }).then(r => r.json())
+        console.log('bien posté', request.secure_url)
+        if(request.secure_url) {
+            const newRequest = await fetch('/api/post/createPost', {
+                method: 'POST',
+                body: JSON.stringify({
+                    description,
+                    content: request.secure_url,
+                    location,
+                    userId: cookies.user?.id,
+                    festival
+                })
+            })
+            if(newRequest.ok) {
+                router.push('/feed')
+            }
+        }
+    }
+
+    return (
     <StyledPage>
         <Container>
             <main>
                 <section>
                     <h1>Ajouter un post</h1>
-                    <form>
+                    <form onSubmit={(e) => handleSubmit(e)}>
                         <label>
                              {!picture ? "Ajouter une photo" : <img src={picture?.picturePreview}></img>}
                             <input required type="file" accept="image/*" capture 
@@ -90,8 +125,8 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
                         </label>
                         <input required type="text" placeholder='Ajouter un lieu' onChange={(e) => setLocation(e.target.value)}></input>
                         <textarea placeholder='Ajouter une description' onChange={(e) => setDescription(e.target.value)}></textarea>
-                        <select required onChange={(e) => setFestival(e.target.options[e.target.selectedIndex].text)}>
-                            <option selected disabled>Choisissez un festival</option>
+                        <select required onChange={(e) => setFestival(e.target.options[e.target.selectedIndex].value)}>
+                            <option selected disabled value="">Choisissez un festival</option>
                             {festivals.map((festival, i) => (
                                 <option key={i} value={festival.id}>{festival.name}</option>
                             ))}

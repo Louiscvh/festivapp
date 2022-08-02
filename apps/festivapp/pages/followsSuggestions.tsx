@@ -17,7 +17,14 @@ const StyledPage = styled.div`
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 30px;
-        margin: 1rem 0px;
+        margin: 1rem 0px 2rem 0px;
+    }
+
+    section > a {
+        background-color: ${globalColors.black};
+        border-radius: 150px;
+        color: ${globalColors.white};
+        padding: 1rem 1.5rem;
     }
 `
 export default function FollowsSuggestions() {
@@ -46,7 +53,7 @@ export default function FollowsSuggestions() {
                     )) : <Skeleton width={300} height={100}></Skeleton>}
                 </div>
                 <Link href='/feed'>
-                    <a>Ignorer</a>
+                    <a className="suggestions__next" >Ignorer</a>
                 </Link>
             </section>
         </StyledPage>

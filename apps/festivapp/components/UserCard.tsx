@@ -13,7 +13,7 @@ const StyledPage = styled.a`
         border-radius: 8px;
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 0.5rem;
         justify-content: space-between;
         width: calc(100% - 2rem);
 
@@ -23,8 +23,20 @@ const StyledPage = styled.a`
             gap: 1rem;
         }
 
-        h3 {
+        h5 {
             inline-size: max-content;
+            font-size: 1rem;
+            width : 100px;
+            overflow:hidden;
+            display:inline-block;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            @media screen and (max-width: 1024px) {
+                overflow: auto;
+                text-overflow: unset;
+                width : fit-content
+            }
         }
 
         img {
@@ -43,14 +55,13 @@ const handleSub = async (e: any, followerId, followingId) => {
     e.preventDefault()
     setIsFollowed(!isFollowed)
     setFollowCounter(isFollowed ? followCounter - 1 : followCounter + 1)
-    const response = await fetch(`/api/follow`, {
+    await fetch(`/api/follow`, {
         method: 'POST',
         body: JSON.stringify({
             followerId,
             followingId
         })
     })
-    const result = await response.json();
   }
   return (
     <Link passHref href={`/profil/${data.id}`} key={data.id}>
@@ -58,7 +69,7 @@ const handleSub = async (e: any, followerId, followingId) => {
             <div>
                 <img src={data.avatar} alt="User avatar"></img>
                 <div>
-                    <h3>{data.firstName + " " + data.lastName}</h3>
+                    <h5>{data.firstName + " " + data.lastName}</h5>
                     <p>{followCounter} abonné{followCounter.length > 1 ? "s" : ""}</p>
                 </div>
             </div>
