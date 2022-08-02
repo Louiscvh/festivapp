@@ -88,7 +88,7 @@ export default function Feed() {
         } else {
             fetch(`/api/user/feed/${cookies.user?.id}`)
             .then(response => response.json())
-            .then(data => setFeed(data)) 
+            .then(data => setFeed(data))
         }
     }, [cookies, router])
 
@@ -97,6 +97,7 @@ export default function Feed() {
         .then(response => response.json())
         .then(data => setUser(data)) 
     }, [cookies])
+
   return (
     <>
         <Head>
@@ -126,7 +127,7 @@ export default function Feed() {
                              {feed.map((post, index) => (
                                 <Post userLike={user?.like} data={post} key={index}></Post>
                             ))}
-                        </section>: <Skeleton width={800} height={500}></Skeleton>}
+                        </section> : <Skeleton width={800} height={500}></Skeleton>}
                         <aside>
                             {user ? 
                             <div>

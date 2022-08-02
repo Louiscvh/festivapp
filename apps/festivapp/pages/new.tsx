@@ -117,7 +117,7 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
                     <form onSubmit={(e) => handleSubmit(e)}>
                         <label>
                              {!picture ? "Ajouter une photo" : <img src={picture?.picturePreview}></img>}
-                            <input required type="file" accept="image/*" capture 
+                            <input required type="file" accept="image/*" 
                             onChange={(e) => setPicture({
                                 picturePreview: URL.createObjectURL(e.target.files[0]),
                                 pictureAsFile: e.target.files[0],
