@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const request = await prisma.user.findMany({
             where : {
                 NOT: {
-                    id: Number(id)
+                    id: Number(id),
                   },
             },
             orderBy: {

@@ -21,7 +21,10 @@ const StyledPage = styled.div`
     }
 
     & > div {
-        width: 100%;
+        width: 50%;
+        @media screen and (max-width: 1024px) {
+            width: 100%;
+        }
     }
 
     & > div > h3 {
@@ -31,7 +34,7 @@ const StyledPage = styled.div`
     & > div > p {
         margin-bottom: 1rem;
     }
-     & > img {
+    & > img {
         width: 50%;
         height: auto;
         border-radius: 8px;

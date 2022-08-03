@@ -61,7 +61,11 @@ const StyledPage = styled.div`
             padding: 1rem;
             border-radius: 8px;
             width: calc(100% - 2rem);
-
+            will-change: transform;
+            transition: transform 0.2s ease-in-out;
+            &:hover {
+                transform: scale(1.05);
+            }
             img {
                 height: 50px;
             }

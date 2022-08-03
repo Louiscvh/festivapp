@@ -16,6 +16,11 @@ const StyledPage = styled.a`
         gap: 0.5rem;
         justify-content: space-between;
         width: calc(100% - 2rem);
+        will-change: transform;
+        transition: transform 0.2s ease-in-out;
+        &:hover {
+            transform: scale(1.05)
+        }
 
         & > div {
             display: flex;
@@ -81,7 +86,7 @@ const handleSub = async (e: any, followingId) => {
             </div>
             {data?.id != cookies.user?.id ? 
             <Button onClick={(e) => handleSub(e, data?.id)}>
-                {!isFollowed ? 'Suivre' : 'Ne plus suivre'}
+                {!isFollowed ? 'Follow' : 'Unfollow'}
             </Button> : null}
         </StyledPage>
     </Link>

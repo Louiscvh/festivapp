@@ -56,7 +56,7 @@ const StyledPage = styled.header`
           color: ${globalColors.white};
         }
 
-        & li:first-child a{
+        & li:first-child a p{
           
           color: ${globalColors.black};
           opacity: 0.6;
@@ -110,6 +110,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(null)
   const handleLogout = (e) => {
     e.preventDefault()
+    setMobileOpen(false)
     removeCookie('user', { path: '/' });
     router.push('/login')
   }
@@ -131,11 +132,11 @@ export default function Header() {
                     </Link>
                   </li>
                   <li onClick={() => setMobileOpen(!mobileOpen)}>
-                    <Link href={`/followsSuggestions`} >
+                    <Link href="/explore" passHref>
                       <a>
-                        <button className="header__profil">
+                        <Button>
                           Explorer
-                        </button>
+                        </Button>
                       </a>
                     </Link>
                   </li>
@@ -183,7 +184,9 @@ export default function Header() {
                 <>
                 <li>
                   <Link href="/signin">
-                    <a>Inscription</a>
+                    <a>
+                      <p>Inscription</p>
+                      </a>
                   </Link>
                 </li>
                 <li>
@@ -198,6 +201,16 @@ export default function Header() {
                 </>
                 ) : (
                 <>
+                  <li>
+                    <Link href="/explore">
+                      <a>
+                        <Button>
+                          Explorer
+                        </Button>
+                      </a>
+                    </Link>
+                    
+                  </li>
                   <li>
                     <Button onClick={(e: MouseEvent) => handleLogout(e)}>
                       Déconnexion

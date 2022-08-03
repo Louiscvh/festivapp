@@ -12,25 +12,40 @@ import { useCookies } from 'react-cookie';
 const StyledPage = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 2rem;
+  button {
+      z-index: 1;
+    }
   section {
-    max-width: 600px;
+    max-width: 700px;
+    width: calc(100% - 4rem);
     background-color: ${globalColors.white};
     padding: 2rem;
     border-radius: 8px;
   }
   .profil__header {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    @media screen and (min-width: 1024px) {
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 0rem;
+  } 
+  }
+
+  .profil__details {
+    display: flex;
     align-items: center;
     gap: 2rem;
-
-    button {
-      z-index: 1;
-    }
   }
 
   img {
-    height: 80px;
+    height: 100px;
     margin-top: 1rem;
   }
 
@@ -49,7 +64,6 @@ const StyledPage = styled.div`
   }
 
   #profil__post {
-    margin-bottom: 2rem;
     div {
       display: flex;
       flex-wrap: wrap;
@@ -71,6 +85,15 @@ const StyledPage = styled.div`
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
+
+      img {
+        will-change: transform;
+        transition: transform 0.2s ease-out;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
     }
   }
 `;
@@ -78,7 +101,7 @@ const StyledPage = styled.div`
 export default function Profil() {
   const [user, setUser] = useState(null);
   const [canShare, setCanShare] = useState(false);
-  const [cookies, ,] = useCookies(['user']);
+  const [cookies, ,removeCookie] = useCookies(['user']);
   const [isFollow, setIsFollow] = useState(null);
   const [followCounter, setFollowCounter] = useState(0)
   const router = useRouter()
@@ -118,7 +141,17 @@ export default function Profil() {
     })
   }
 
-  console.log(followCounter)
+  const handleDelete = (e, userId) => {
+    e.preventDefault()
+    fetch('/api/user/deleteUser', {
+      method: "POST",
+      body: JSON.stringify({
+        userId
+      })
+    })
+    removeCookie('user', { path: '/' });
+    router.push('/')
+  }
 
   return (
     <Container>
@@ -131,26 +164,28 @@ export default function Profil() {
           <section>
             <div className="profil__header">
               <h1>{user?.firstName} {user?.lastName}</h1>
-              {user?.id == cookies.user?.id ? <Button>Modifier mon profil</Button> : <Button onClick={(e) => handleSub(e, user?.id)}>{isFollow ? "Ne plus suivre" : "Suivre"}</Button>}
+              {user?.id == cookies.user?.id ? <Button>Modifier mon profil</Button> : <Button onClick={(e) => handleSub(e, user?.id)}>{isFollow ? "Unfollow" : "Follow"}</Button>}
             </div>
-            <img src={user?.avatar} alt='User avatar'></img>
-            <div className="user__stats">
-                <div>
-                  <h2>{followCounter || "-"}</h2>
-                  <p>Abonné{followCounter > 1 ? "s" : ""}</p>
-                </div>
-                <div>
-                  <h2>{user?.following.length}</h2>
-                  <p>Abonnement{user?.following.length > 1 ? "s" : ""}</p>
-                </div>
-                <div>
-                  <h2>{user?.post.length}</h2>
-                  <p>Post{user?.post.length > 1 ? "s" : ""} publié{user?.post.length > 1 ? "s" : ""}</p>
-                </div>
-                <div>
-                  <h2>{user?.like.length}</h2>
-                  <p>Post{user?.like.length > 1 ? "s" : ""} liké{user?.like.length > 1 ? "s" : ""}</p>
-                </div>
+            <div className="profil__details">
+              <img src={user?.avatar} alt='User avatar'></img>
+              <div className="user__stats">
+                  <div>
+                    <h2>{followCounter || "-"}</h2>
+                    <p>Abonné{followCounter > 1 ? "s" : ""}</p>
+                  </div>
+                  <div>
+                    <h2>{user?.following.length}</h2>
+                    <p>Abonnement{user?.following.length > 1 ? "s" : ""}</p>
+                  </div>
+                  <div>
+                    <h2>{user?.post.length}</h2>
+                    <p>Post{user?.post.length > 1 ? "s" : ""} publié{user?.post.length > 1 ? "s" : ""}</p>
+                  </div>
+                  <div>
+                    <h2>{user?.like.length}</h2>
+                    <p>Post{user?.like.length > 1 ? "s" : ""} liké{user?.like.length > 1 ? "s" : ""}</p>
+                  </div>
+              </div>
             </div>
           </section>
           <section id='profil__post'>
@@ -164,10 +199,14 @@ export default function Profil() {
                 </Link>
               )) : <h4>{user?.firstName} n&apos;a encore rien publié</h4>}
             </div>
-            {canShare ? <Button onClick={(e: Event) => handleShare(e)}>
+          </section>
+          {canShare ? <Button onClick={(e: Event) => handleShare(e)}>
               Partager ce profil
             </Button> : ""}
-          </section>
+              {user?.id == cookies.user?.id &&
+              <Button onClick={(e) => handleDelete(e, user?.id)}>
+                Supprimer mon compte
+              </Button>}
         </>
         : <Skeleton width={500} height={500}></Skeleton>}
       </StyledPage>

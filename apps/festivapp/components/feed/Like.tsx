@@ -8,6 +8,14 @@ const StyledPage = styled.div`
     gap: 0.5rem;
     margin-top: 0.8rem;
     cursor: pointer;
+
+    svg {
+        will-change: transform;
+        transition: transform 0.2s ease-in-out;
+    }
+    &:hover svg {
+        transform: scale(1.1)
+    }
 `
 
 export default function Like({isLiked, setIsLiked, likeCount, setLikeCount, postId, userId} : {isLiked: any, setIsLiked: any, likeCount: any, setLikeCount: any, postId: number, userId: number}) {

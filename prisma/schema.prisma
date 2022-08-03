@@ -34,7 +34,7 @@ model Post {
   description  String?
   content      String
   location     String?
-  author       User @relation("post", fields: [authorId], references: [id])
+  author       User @relation("post", fields: [authorId], references: [id], onDelete: Cascade)
   authorId     Int
   createdAt    DateTime @default(now())
   modifiedAt   DateTime @default(now())
@@ -65,15 +65,15 @@ model Follow {
 
 model Like {
   id          Int  @id @default(autoincrement())
-  author      User @relation("userLike", fields: [authorId], references: [id])
+  author      User @relation("userLike", fields: [authorId], references: [id], onDelete: Cascade)
   authorId    Int
-  post        Post @relation("postLike", fields: [postId], references: [id])
+  post        Post @relation("postLike", fields: [postId], references: [id], onDelete: Cascade)
   postId      Int
 }
 
 model Comment {
   id          Int  @id @default(autoincrement())
-  author      User @relation("userComment", fields: [authorId], references: [id])
+  author      User @relation("userComment", fields: [authorId], references: [id], onDelete: Cascade)
   authorId    Int
   post        Post @relation("postComment", fields: [postId], references: [id], onDelete: Cascade)
   postId      Int

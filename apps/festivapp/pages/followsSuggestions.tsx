@@ -42,6 +42,8 @@ export default function FollowsSuggestions() {
        
     }, [router, cookies.user])
 
+    console.log(suggestions)
+
       return (
     <Container>
         <StyledPage>
@@ -49,7 +51,7 @@ export default function FollowsSuggestions() {
                 <h1>Pour commencer, voici quelques profils qui pourrait vous intéréssé</h1>
                 <div className='suggestions__container'>
                     {suggestions.length ? suggestions.map((suggestion, i) => (
-                        <UserCard data={suggestion} key={i} />
+                        <UserCard isFollow={suggestion.follower.some(follow => follow['followerId'] == cookies.user?.id)} data={suggestion} key={i} />
                     )) : <Skeleton width={300} height={100}></Skeleton>}
                 </div>
                 <Link href='/feed'>
