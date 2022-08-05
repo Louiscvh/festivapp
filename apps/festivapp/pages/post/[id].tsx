@@ -108,7 +108,7 @@ export default function Post() {
     const handleComment = async(e) => {
         e.preventDefault()
         setComment('')
-        setPostComment(oldArray => [{content: comment, author: {firstName: cookies.user?.firstName, lastName:cookies.user?.lastName, avatar: cookies.user?.avatar}}, ...oldArray] );
+        setPostComment(oldArray => [{content: comment, author: {id: cookies.user?.id, firstName: cookies.user?.firstName, lastName:cookies.user?.lastName, avatar: cookies.user?.avatar}}, ...oldArray] );
         await fetch(`/api/comment/createComment`, {
             method: 'POST',
             body: JSON.stringify({

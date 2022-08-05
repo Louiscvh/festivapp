@@ -4,6 +4,7 @@ import { globalColors } from '../../pages/_app';
 
 export default function Filter() {
 
+
     const StyledPage = styled.select`
         all: unset;
         background-color: ${globalColors.darkGrey};

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components"
 import { globalColors, globalTransitions } from '../../pages/_app';
 
@@ -57,10 +57,31 @@ const StyledPage = styled.div`
 `
 export default function CheckboxFilter({datas, title}) {
   const [open, setOpen] = useState(false)
+    const inputRef = useRef(null)
+  /**
+    * Detect if your click outside the ref
+    * @param ref Element to detect click outside
+    */
+   const useOutside = (ref) => {
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+            setOpen(false)
+        }
+      }
+      document.addEventListener("click", handleClickOutside);
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }, [ref]);
+  }
+
+  useOutside(inputRef)
+
   return (
-    <StyledPage onClick={() => setOpen(!open)}>
+    <StyledPage ref={inputRef} onClick={() => setOpen(!open)}>
         <button>{open ? "-" : "+"} {title}</button>
-        <div style={{display: !open ? "none" : "flex"}}>
+        <div  style={{display: !open ? "none" : "flex"}}>
             {datas.map((data, i) => (
                 <label key={i}>
                     <input type="checkbox"  />

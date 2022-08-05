@@ -28,6 +28,7 @@ const StyledPage = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: space-between;
     gap: 1rem;
     margin-bottom: 2rem;
     @media screen and (min-width: 1024px) {
@@ -50,8 +51,10 @@ const StyledPage = styled.div`
   }
 
   img {
-    height: 100px;
-    margin-top: 1rem;
+    height: 80px;
+    @media screen and (max-width: 1024px) {
+      margin-top: 1rem;
+    } 
   }
 
   .user__stats {

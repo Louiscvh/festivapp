@@ -26,14 +26,18 @@ const StyledPage = styled.div`
       padding: 10px;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.8rem;
       color: ${globalColors.black};
       &:hover {
         background-color: ${globalColors.lightGrey};
       }
+
+      p {
+        font-size: 0.8rem
+      }
       img {
-      height: 30px;
-    }
+        height: 30px;
+      }
     }
 
     
@@ -41,12 +45,14 @@ const StyledPage = styled.div`
 `
 
 export default function FeedSearch() {
+  const [searchList, setSearchList] = useState([]);
+  const searchInput = useRef(null);
 
     /**
     * Detect if your click outside the ref
     * @param ref Element to detect click outside
     */
-  const useOutside= (ref) => {
+  const useOutside = (ref) => {
     useEffect(() => {
       const handleClickOutside = (event) => {
         if (ref.current && !ref.current.contains(event.target)) {
@@ -60,9 +66,7 @@ export default function FeedSearch() {
     }, [ref]);
   }
 
-  const searchInput = useRef(null);
   useOutside(searchInput)
-  const [searchList, setSearchList] = useState([]);
 
   const handleSearch = async(e, text) => {
     e.preventDefault()
