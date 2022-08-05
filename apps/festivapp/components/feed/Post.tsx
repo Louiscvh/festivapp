@@ -65,7 +65,6 @@ export default function Post({userLike, data}) {
     setIsLiked(userLike?.some( like => like['postId'] == data.id))
    }, [userLike, cookies.user])
 
-   console.log(userLike, data.id)
   return (
     <StyledPage>
         <div>

@@ -117,7 +117,6 @@ export default function Post() {
                 authorId: cookies.user?.id
             })
         })
-        console.log(postComment)
     }
 
     const handleDelete = (e, postId) => {
@@ -135,7 +134,7 @@ export default function Post() {
         <StyledPage>
             {post ?
             <>
-                <img src={post.content}></img>
+                <img src={post.content} alt="Picture of post"></img>
                 <div>
                     <UserCard isFollow={post.author?.follower.some( follower => follower['followerId'] == cookies.user?.id)} data={post.author}></UserCard>
                     <h3>{post.festival?.name} - {post.location}</h3>

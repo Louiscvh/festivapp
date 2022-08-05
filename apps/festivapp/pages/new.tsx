@@ -90,7 +90,6 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
             method: "POST",
             body: formData
         }).then(r => r.json())
-        console.log('bien posté', request)
         if(request.secure_url) {
             try {
                 await fetch('/api/post/createPost', {

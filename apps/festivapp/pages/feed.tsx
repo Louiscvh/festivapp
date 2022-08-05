@@ -13,15 +13,24 @@ import Link from 'next/link';
 import Suggestions from '../components/feed/Suggestions';
 import Head from 'next/head';
 import Filters from '../components/feed/Filters';
+import FeedSearch from '../components/feed/FeedSearch';
 
+
+
+  
 const StyledPage = styled.div`
     .feed__header {
         margin-bottom: 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        @media screen and (max-width: 1024px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
 
-        div {
+        }
+        & > div {
             display: flex;
             align-items: center;
             gap: 1rem;
@@ -32,9 +41,7 @@ const StyledPage = styled.div`
                 background-color: ${globalColors.darkGrey};
                 border-radius: 150px;
                 font-family: 'Poppins', sans-serif;
-                @media screen and (max-width: 1024px) {
-                    display: none;
-                }
+                font-size: 0.8rem;
             }
         }
     }
@@ -88,6 +95,9 @@ export default function Feed() {
     const [feed, setFeed] = useState([]);
     const [user, setUser] = useState(null)
     const router = useRouter()
+
+    
+
     useEffect(() => {
         if(!cookies.user){
             router.push('/')
@@ -114,7 +124,7 @@ export default function Feed() {
                 <div className="feed__header">
                     <h1>Mon Feed</h1>
                     <div>
-                        <input type="text" name="" id="" placeholder='Rechercher' />
+                        <FeedSearch></FeedSearch>
                         <Link href="/new">
                             <a>
                                 <Button>

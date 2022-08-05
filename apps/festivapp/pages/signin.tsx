@@ -35,7 +35,6 @@ export default function Signin() {
             })
             const result = await response.json();
             if(response.ok){
-                console.log(result)
                 setCookie('user', result, { path: '/' });
                 router.push('/followsSuggestions')
             } else {

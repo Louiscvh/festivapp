@@ -42,6 +42,11 @@ const StyledPage = styled.div`
     display: flex;
     align-items: center;
     gap: 2rem;
+    @media screen and (max-width: 1024px) {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+    } 
   }
 
   img {
@@ -170,7 +175,7 @@ export default function Profil() {
               <img src={user?.avatar} alt='User avatar'></img>
               <div className="user__stats">
                   <div>
-                    <h2>{followCounter || "-"}</h2>
+                    <h2>{followCounter}</h2>
                     <p>Abonné{followCounter > 1 ? "s" : ""}</p>
                   </div>
                   <div>

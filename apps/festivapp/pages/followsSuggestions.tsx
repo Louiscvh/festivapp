@@ -42,8 +42,6 @@ export default function FollowsSuggestions() {
        
     }, [router, cookies.user])
 
-    console.log(suggestions)
-
       return (
     <Container>
         <StyledPage>

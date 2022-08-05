@@ -4,6 +4,7 @@ import 'moment/locale/fr';
 import { globalColors } from '../../pages/_app';
 import Link from "next/link";
 import Button from "../Button";
+import { useCookies } from "react-cookie";
 
 const StyledPage = styled.div`
     a {
@@ -40,7 +41,7 @@ const StyledPage = styled.div`
 }
 `
 export default function Comment({data, setPostComment, postComment}) {
-
+    const [cookies] = useCookies(['user']);
     const handleDelete = (e, commentId) => {
         e.preventDefault()
         fetch(`/api/comment/deleteComment`, {
@@ -64,7 +65,10 @@ export default function Comment({data, setPostComment, postComment}) {
                         <p>{data.content}</p>
                     </div>
                 </div>
-                <Button onClick={(e) => handleDelete(e, data.id)}>Supprimer</Button>
+                {data.author.id === cookies.user?.id && 
+                 <Button onClick={(e) => handleDelete(e, data.id)}>Supprimer</Button>
+                 }
+               
             </a>
         </Link>
     </StyledPage>
