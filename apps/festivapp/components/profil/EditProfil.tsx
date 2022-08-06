@@ -53,9 +53,17 @@ const StyledPage = styled.section`
     }
 `
 
-export default function EditProfil({setEditOpen, password, setPassword, passwordConfirm, setPasswordConfirm, firstName, setFirstName, bio, setBio, avatar, setAvatar, picture, setPicture, lastName, setLastName, user}) {
+export default function EditProfil({toast, setEditOpen, password, setPassword, passwordConfirm, setPasswordConfirm, firstName, setFirstName, bio, setBio, avatar, setAvatar, picture, setPicture, lastName, setLastName, user}) {
     const [, setCookie, ] = useCookies(['user'])
     const handlePicture = async(e) => {
+        toast.success('Votre profil a été modifié !', {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+        });
         e.preventDefault();
         const formData = new FormData()
         formData.append('file', picture?.pictureAsFile)

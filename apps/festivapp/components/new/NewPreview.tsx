@@ -64,6 +64,7 @@ export default function NewPreview({picture, description, location, festival, li
             setCurrentUser(cookies.user)
         }
     }, [cookies.user])
+
   return (
     <StyledPage>
         <div>
@@ -81,9 +82,9 @@ export default function NewPreview({picture, description, location, festival, li
             <svg width="28" height="24" viewBox="0 0 38 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10.25 2.25C5.41825 2.25 1.5 6.128 1.5 10.9125C1.5 14.7747 3.03125 23.9412 18.104 33.2075C18.374 33.3718 18.684 33.4587 19 33.4587C19.3161 33.4587 19.626 33.3718 19.896 33.2075C34.9688 23.9412 36.5 14.7747 36.5 10.9125C36.5 6.128 32.5818 2.25 27.75 2.25C22.9183 2.25 19 7.5 19 7.5C19 7.5 15.0818 2.25 10.25 2.25Z" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            <p>{likeVisible == 'true' ? '0 like' : ''}</p>
+            <p>{likeVisible ? '0 like' : ''}</p>
         </div>
-        <h4>{festival || '-'}</h4>
+        <h4>{festival?.name || '-'}</h4>
         <p>{description || '-'}</p>
     </StyledPage>
   )

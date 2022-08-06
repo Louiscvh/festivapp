@@ -23,7 +23,7 @@ export default async function handler(req, res) {
                 }
             })
             if(!response) {
-                res.status(500).json("Aucun utilisateur à été trouvé")
+                res.status(500).json("Aucun utilisateur à été trouvé !")
                 await prisma.$disconnect()
             }
             if(await bcrypt.compare(password, response.password)){
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
                 res.status(200).json(secureUser)
                 await prisma.$disconnect()
             } else {
-                res.status(500).json("Le mot de passe est incorrect")
+                res.status(500).json("Le mot de passe est incorrect !")
                 await prisma.$disconnect()
             }
             

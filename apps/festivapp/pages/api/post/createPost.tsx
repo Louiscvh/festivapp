@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if(req.method == "POST") {
-        const {description, content, location, userId, festival} = JSON.parse(req.body)
+        const {description, content, location, userId, festival, likeVisible} = JSON.parse(req.body)
         if(description || content || location) {
             try {
                 const request = await prisma.post.create({
@@ -13,6 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         description,
                         content,
                         location,
+                        likeVisible,
                         author: {
                             connect: {
                                 id: userId

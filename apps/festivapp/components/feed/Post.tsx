@@ -73,7 +73,7 @@ const StyledPage = styled.div`
 `
 
 export default function Post({userLike, data}) {
-
+    console.log(data)
     const [cookies, , ] = useCookies(['user']);
     const [likeCount, setLikeCount] = useState(data.like.length);
     const [isLiked, setIsLiked] = useState(null);
@@ -100,7 +100,9 @@ export default function Post({userLike, data}) {
             <img src={`${data.content}`} alt="Post picture in feed"></img>
         </Link>
         <div>
-        <Like isLiked={isLiked} 
+        <Like 
+            likeVisible={data.likeVisible}
+            isLiked={isLiked} 
             setIsLiked={setIsLiked} 
             likeCount={likeCount} 
             setLikeCount={setLikeCount} 

@@ -125,7 +125,7 @@ export default function Index() {
               <div className="landing__hero__content" ref={heroBannerContent}>
                 <h2>Réseau social pour festival</h2>
                 <p>Le réseau social de tous vos festivals ! Festivapp vous accompagne pour partager vos meilleurs moments.</p>
-                <Button link="/login">Découvrir</Button>
+                <Button link="/signin">Découvrir</Button>
               </div>
             </div>
             <img ref={heroBannerImg} src="https://img.huffingtonpost.com/asset/60dded403b0000d33eecb101.png?cache=F1LCXB5Pp7&ops=1778_1000" alt="Banner image" />

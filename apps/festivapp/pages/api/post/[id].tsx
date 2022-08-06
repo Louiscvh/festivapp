@@ -16,6 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 description: true,
                 location: true,
                 createdAt: true,
+                likeVisible: true,
                 festival: {
                     select: {
                         name: true

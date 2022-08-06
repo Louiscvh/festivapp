@@ -143,7 +143,7 @@ export default function Post() {
                     <h3>{post.festival?.name} - {post.location}</h3>
                     <p>{post.description}</p>
                     <div className="post__options">
-                        <Like postId={post.id} userId={cookies.user?.id} setIsLiked={setIsLiked} isLiked={isLiked} likeCount={likeCount} setLikeCount={setLikeCount}></Like>
+                        <Like likeVisible={post.likeVisible} postId={post.id} userId={cookies.user?.id} setIsLiked={setIsLiked} isLiked={isLiked} likeCount={likeCount} setLikeCount={setLikeCount}></Like>
                         {post.author?.id == cookies.user?.id && <Button onClick={(e) => handleDelete(e, post.id)}>Supprimer mon post</Button>}
                     </div>
                     <section>

@@ -7,10 +7,11 @@ import { PrismaClient } from '@prisma/client';
 import { useState } from 'react';
 import NewPreview from '../components/new/NewPreview';
 import { InferGetStaticPropsType } from 'next';
-import { json } from 'stream/consumers';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const StyledPage = styled.div`
 margin-bottom: 2rem;
@@ -76,7 +77,7 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
     const [description, setDescription] = useState('');
     const [location, setLocation] = useState('')
     const [festival, setFestival] = useState(null);
-    const [likeVisible, setLikeVisible] = useState('true');
+    const [likeVisible, setLikeVisible] = useState(false);
 
     const router = useRouter()
     useEffect(() => {
@@ -87,6 +88,14 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
 
     const handleSubmit = async(e) => {
         e.preventDefault()
+        toast.success('Votre post à bien été créé !', {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+        });
         
         const formData = new FormData()
         formData.append('file', picture?.pictureAsFile)
@@ -105,7 +114,8 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
                         content: request.secure_url,
                         location,
                         userId: cookies.user?.id,
-                        festival
+                        festival: festival?.id,
+                        likeVisible
                     })
                 })
                 router.push('/feed')
@@ -117,6 +127,7 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
 
     return (
     <StyledPage>
+        <ToastContainer/>
         <Container>
             <main>
                 <section>
@@ -132,20 +143,24 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
                         </label>
                         <input required type="text" placeholder='Ajouter un lieu' onChange={(e) => setLocation(e.target.value)}></input>
                         <textarea placeholder='Ajouter une description' onChange={(e) => setDescription(e.target.value)}></textarea>
-                        <select required onChange={(e) => setFestival(e.target.options[e.target.selectedIndex].value)}>
+                        <select required 
+                            onChange={(e) => setFestival({
+                            id: parseInt(e.target.options[e.target.selectedIndex].getAttribute("data-festivalId")), 
+                            name: e.target.options[e.target.selectedIndex].value
+                        })}>
                             <option selected disabled value="">Choisissez un festival</option>
                             {festivals.map((festival, i) => (
-                                <option key={i} value={festival.name}>{festival.name}</option>
+                                <option key={i} data-festivalId={festival.id} value={festival.name}>{festival.name}</option>
                             ))}
                         </select>
                         <h3>Voulez-vous afficher le nombre de like sur votre post ?</h3>
                         <div className="new__visible">
                             <div>
-                                <input checked={likeVisible === "true"} onChange={(e) => setLikeVisible(e.target.value)} value="true" type="radio" name="yes_no" id="yes" />
+                                <input checked={likeVisible} onChange={() => setLikeVisible(true)} type="radio" name="yes_no" id="yes" />
                                 <label htmlFor='yes'>Oui</label>
                             </div>
                             <div>
-                                <input checked={likeVisible === "false"} onChange={(e) => setLikeVisible(e.target.value)} value="false" type="radio" name="yes_no" id="no" />
+                                <input checked={!likeVisible} onChange={() => setLikeVisible(false)} type="radio" name="yes_no" id="no" />
                                 <label htmlFor='no'>Non</label>
                             </div>
                         </div>

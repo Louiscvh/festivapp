@@ -115,7 +115,7 @@ export default function Feed() {
         .then(response => response.json())
         .then(data => setUser(data)) 
     }, [cookies])
-
+    console.log(feed)
   return (
     <>
         <Head>

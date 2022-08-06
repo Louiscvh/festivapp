@@ -10,12 +10,15 @@ import Skeleton from '../../components/Skeleton';
 import { useCookies } from 'react-cookie';
 import EditProfil from '../../components/profil/EditProfil';
 import PostProfil from '../../components/profil/PostProfil';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const StyledPage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 2rem;
+  margin-bottom: 2rem;
   button {
       z-index: 1;
     }
@@ -162,6 +165,7 @@ export default function Profil() {
       <Head>
         <title>Festivapp | {user?.firstName} {user?.lastName} </title>
       </Head>
+      <ToastContainer />
       <StyledPage>
       {user ? 
         <>
@@ -195,7 +199,7 @@ export default function Profil() {
               {bio ?  <q>{bio}</q> : null}
             </div>
           </section>
-          {editOpen ? <EditProfil setEditOpen={setEditOpen} password={password} setPassword={setPassword} passwordConfirm={passwordConfirm} setPasswordConfirm={setPasswordConfirm} setFirstName={setFirstName} firstName={firstName} bio={bio} setBio={setBio} avatar={avatar} setAvatar={setAvatar} picture={picture} setPicture={setPicture} lastName={lastName} setLastName={setLastName} user={user}></EditProfil> : <PostProfil user={user}></PostProfil>}
+          {editOpen ? <EditProfil toast={toast} setEditOpen={setEditOpen} password={password} setPassword={setPassword} passwordConfirm={passwordConfirm} setPasswordConfirm={setPasswordConfirm} setFirstName={setFirstName} firstName={firstName} bio={bio} setBio={setBio} avatar={avatar} setAvatar={setAvatar} picture={picture} setPicture={setPicture} lastName={lastName} setLastName={setLastName} user={user}></EditProfil> : <PostProfil user={user}></PostProfil>}
           
           {canShare ? <Button onClick={(e: Event) => handleShare(e)}>
               Partager ce profil

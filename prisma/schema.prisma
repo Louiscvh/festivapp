@@ -41,7 +41,8 @@ model Post {
   festival     Festival @relation(fields: [festivalId], references: [id])
   festivalId   Int
   like         Like[] @relation("postLike")
-  comment      Comment[] @relation("postComment") 
+  comment      Comment[] @relation("postComment")
+  likeVisible  Boolean @default(false)
 }
 
 model Festival {
