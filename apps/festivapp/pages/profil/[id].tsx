@@ -41,20 +41,27 @@ const StyledPage = styled.div`
   } 
   }
 
-  .profil__details > div{
+  .profil__details {
+    & > div{
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 2rem;
-    @media screen and (max-width: 1024px) {
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-    } 
+    margin: 2rem 0px;
+      @media screen and (max-width: 1024px) {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+      } 
+    }
+
+    q {
+      opacity: 0.7;
+    }
   }
 
   img {
-    height: 80px;
-    width: 80px;
+    height: 200px;
+    width: 200px;
     border-radius: 8px;
     object-fit: cover;
     @media screen and (max-width: 1024px) {
@@ -66,8 +73,7 @@ const StyledPage = styled.div`
     display: flex;
     align-items: flex-start;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 2rem 0px;
+    gap: 0.7rem;
 
     div {
       padding: 10px;

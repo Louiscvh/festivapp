@@ -51,7 +51,10 @@ const StyledPage = styled.a`
 
         img {
             height: 50px;
-            border-radius: 150px;
+            width: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            aspect-ratio: 1/1;
         }
         button {
             z-index: 0;

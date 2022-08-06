@@ -1,6 +1,7 @@
 import { MouseEventHandler, useState } from 'react';
 import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
+import { globalColors } from '../../pages/_app';
 
 const StyledPage = styled.div`
     display: flex; 
@@ -10,6 +11,9 @@ const StyledPage = styled.div`
     cursor: pointer;
 
     svg {
+        padding: 5px;
+        border-radius: 8px;
+        background-color: ${globalColors.lightGrey};
         will-change: transform;
         transition: transform 0.2s ease-in-out;
     }

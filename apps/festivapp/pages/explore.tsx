@@ -22,6 +22,12 @@ const StyledPage = styled.main`
             aspect-ratio: 1/1;
             object-fit: cover;
             border-radius: 8px;
+            will-change: transform;
+            transition: transform 0.2s ease-out;
+
+            &:hover {
+                transform: scale(1.05)
+            }
         }
     }
 `

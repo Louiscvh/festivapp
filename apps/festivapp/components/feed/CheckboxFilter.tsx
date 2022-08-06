@@ -16,6 +16,7 @@ const StyledPage = styled.div`
 
     & > button {
         background: none;
+        color: ${globalColors.black};
         border: none;
         font-size: 0.8rem;
         cursor: pointer;

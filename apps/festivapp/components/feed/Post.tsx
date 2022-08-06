@@ -38,6 +38,9 @@ const StyledPage = styled.div`
         align-items: center;
         img{
             height: 30px;
+            border-radius: 8px;
+            aspect-ratio: 1/1;
+            object-fit: cover;
         }
     }
 

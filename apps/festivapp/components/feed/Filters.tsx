@@ -27,7 +27,7 @@ export default function Filters({activeFilters, setActiveFilters}) {
   return (
     <StyledPage>
       <div className="filters__container">
-        <CheckboxFilter activeFilters={activeFilters} setActiveFilters={setActiveFilters} datas={years} title="années" fieldTarget='createAt'></CheckboxFilter>
+        <CheckboxFilter activeFilters={activeFilters} setActiveFilters={setActiveFilters} datas={years} title="année" fieldTarget='createAt'></CheckboxFilter>
         <CheckboxFilter activeFilters={activeFilters} setActiveFilters={setActiveFilters} datas={festival} title="festival" fieldTarget='festival.name'></CheckboxFilter>
       </div>
       <div className="filters__active">
