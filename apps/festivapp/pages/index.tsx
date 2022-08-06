@@ -76,7 +76,7 @@ const StyledPage = styled.div`
 `
 
 export default function Index() {
-  const [cookie,, removeCookie] = useCookies(['user']);
+  const [cookie, , ] = useCookies(['user']);
   const h1 = useRef(null)
   const heroBannerContent = useRef(null)
   const heroBannerImg = useRef(null)
