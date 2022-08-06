@@ -11,6 +11,7 @@ const StyledPage = styled.button`
     margin-top: 0.8rem;
     cursor: pointer;
     padding: 10px;
+    color: ${globalColors.black};
     border-radius: 8px;
     background-color: ${globalColors.lightGrey};
     svg {
