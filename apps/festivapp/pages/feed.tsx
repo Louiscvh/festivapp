@@ -120,11 +120,12 @@ export default function Feed() {
     <>
         <Head>
             <title>Festivapp | Mon feed </title>
+            <meta name="description" content="Page feed qui présente les différentes publications personnalisés en fonction des abonnements de l'utilisateur" />
         </Head>
         <Container>
             <StyledPage>
                 <div className="feed__header">
-                    <h1>Mon Feed</h1>
+                    <h1>Mon feed</h1>
                     <div>
                         <FeedSearch></FeedSearch>
                         <Link href="/new">
@@ -151,7 +152,7 @@ export default function Feed() {
                             <div>
                             <Link href={`/profil/${user?.id}`}>
                                 <a>
-                                    <img src={user?.avatar}></img>
+                                    <img src={user?.avatar} alt="Profil avatar"></img>
                                     <div>
                                         <h3>{user?.firstName} {user?.lastName}</h3>
                                         <p>{user?.follower.length} abonné{user?.follower.length > 1 ? "s" : ""} {user?.following.length} abonnement{user?.following.length > 1 ? "s" : ""}</p>

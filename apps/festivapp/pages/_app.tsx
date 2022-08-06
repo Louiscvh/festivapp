@@ -27,7 +27,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 2.5rem;
   }
 
-  h1, h2, h3, h4, h5, h6, p, a, button, input, time, label, textarea, q{
+  h1, h2, h3, h4, h5, h6, p, a, button, input, time, label, textarea, q, li{
     font-family: 'Poppins', sans-serif;
     margin-block-start: 0em;
     margin-block-end: 0em;

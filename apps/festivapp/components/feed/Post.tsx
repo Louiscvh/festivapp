@@ -12,6 +12,10 @@ const StyledPage = styled.div`
     background-color: ${globalColors.white};
     border-radius: 8px;
     min-width: 500px;
+
+    h2 {
+        font-size:1rem;
+    }
     @media screen and (max-width: 1024px) {
         min-width: 90%;
     } 
@@ -84,7 +88,7 @@ export default function Post({userLike, data}) {
             <Link href={`/profil/${data.author.id}`}>
                 <a>
                     <img src={data.author.avatar} alt="User avatar"></img>
-                    <h4>{data.author.firstName} {data.author.lastName}</h4>
+                    <h2>{data.author.firstName} {data.author.lastName}</h2>
                 </a>
             </Link>
             <div className="post__location">

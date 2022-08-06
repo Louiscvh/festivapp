@@ -3,17 +3,18 @@ import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { globalColors } from '../../pages/_app';
 
-const StyledPage = styled.div`
+const StyledPage = styled.button`
     display: flex; 
+    border: none;
     align-items: center;
     gap: 0.5rem;
     margin-top: 0.8rem;
     cursor: pointer;
-
+    padding: 10px;
+    border-radius: 8px;
+    background-color: ${globalColors.lightGrey};
     svg {
-        padding: 5px;
-        border-radius: 8px;
-        background-color: ${globalColors.lightGrey};
+        
         will-change: transform;
         transition: transform 0.2s ease-in-out;
     }
@@ -23,7 +24,7 @@ const StyledPage = styled.div`
 `
 
 export default function Like({isLiked, setIsLiked, likeCount, setLikeCount, postId, userId} : {isLiked: any, setIsLiked: any, likeCount: any, setLikeCount: any, postId: number, userId: number}) {
-    const handleLike = async(e: any, postId: number, userId: number) => {
+    const handleLike = async(e, postId: number, userId: number) => {
         e.preventDefault()
         setIsLiked(!isLiked)
         setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)

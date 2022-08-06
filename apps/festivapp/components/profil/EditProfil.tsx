@@ -61,7 +61,7 @@ export default function EditProfil({setEditOpen, password, setPassword, password
         formData.append('file', picture?.pictureAsFile)
         formData.append('upload_preset', 'fbbgz8oc')
 
-        await fetch('https://api.cloudinary.com/v1_1/dymgd55eu/image/upload?folder=avatar', {
+        await fetch('https://api.cloudinary.com/v1_1/dymgd55eu/image/upload', {
             method: "POST",
             body: formData
         }).then(r => r.json()).then(r => {
