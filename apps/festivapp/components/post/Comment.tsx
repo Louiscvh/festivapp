@@ -21,8 +21,10 @@ const StyledPage = styled.div`
             gap: 1rem;
 
             img {
-                height: 30px;
+                height: 50px;
                 margin-top: 10px;
+                border-radius: 8px;
+                aspect-ratio: 1/1;
             }
 
             time {

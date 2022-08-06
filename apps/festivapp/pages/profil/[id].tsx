@@ -9,6 +9,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Skeleton from '../../components/Skeleton';
 import { useCookies } from 'react-cookie';
+import EditProfil from '../../components/profil/EditProfil';
+import PostProfil from '../../components/profil/PostProfil';
 const StyledPage = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,7 +41,7 @@ const StyledPage = styled.div`
   } 
   }
 
-  .profil__details {
+  .profil__details > div{
     display: flex;
     align-items: center;
     gap: 2rem;
@@ -52,6 +54,8 @@ const StyledPage = styled.div`
 
   img {
     height: 80px;
+    width: 80px;
+    border-radius: 8px;
     @media screen and (max-width: 1024px) {
       margin-top: 1rem;
     } 
@@ -61,7 +65,7 @@ const StyledPage = styled.div`
     display: flex;
     align-items: flex-start;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.5rem;
     margin: 2rem 0px;
 
     div {
@@ -71,39 +75,7 @@ const StyledPage = styled.div`
     }
   }
 
-  #profil__post {
-    div {
-      display: flex;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-
-      h4 {
-        margin-top: 0.5rem;
-      }
-
-      img{
-        height: 100px;
-        aspect-ratio: 1/1;
-        object-fit: cover;
-        border-radius: 8px;
-      }
-    }
-
-    .profil__post__container {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-
-      img {
-        will-change: transform;
-        transition: transform 0.2s ease-out;
-
-        &:hover {
-          transform: scale(1.05);
-        }
-      }
-    }
-  }
+  
 `;
 
 export default function Profil() {
@@ -112,18 +84,32 @@ export default function Profil() {
   const [cookies, ,removeCookie] = useCookies(['user']);
   const [isFollow, setIsFollow] = useState(null);
   const [followCounter, setFollowCounter] = useState(0)
+  const [editOpen, setEditOpen] = useState(false);
+
+  const [picture, setPicture] = useState(null);
+  const [avatar, setAvatar] = useState(null);
+  const [bio, setBio] = useState(null)
+  const [firstName, setFirstName] = useState(null)
+  const [lastName, setLastName] = useState(user?.lastName)
+  const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
+
+
   const router = useRouter()
   useEffect(() => {
     fetch(`/api/user/${router.query.id}`)
     .then(r => r.json())
     .then(data => {
       setUser(data)
+      setBio(data?.bio)
+      setFirstName(data?.firstName)
+      setLastName(data?.lastName)
+
       setIsFollow(data.follower.some(follow => follow['followerId'] == cookies.user?.id))
       setFollowCounter(data.follower.length)
     })
     if(navigator.share) setCanShare(true)
-  }, [router])
-
+  }, [router, cookies.user?.id, user?.bio, user?.firstName, user?.lastName])
   const handleShare = (e: Event) => {
     e.preventDefault();
     if(navigator) {
@@ -161,6 +147,7 @@ export default function Profil() {
     router.push('/')
   }
 
+  console.log(cookies.user)
   return (
     <Container>
       <Head>
@@ -171,43 +158,36 @@ export default function Profil() {
         <>
           <section>
             <div className="profil__header">
-              <h1>{user?.firstName} {user?.lastName}</h1>
-              {user?.id == cookies.user?.id ? <Button>Modifier mon profil</Button> : <Button onClick={(e) => handleSub(e, user?.id)}>{isFollow ? "Unfollow" : "Follow"}</Button>}
+              <h1>{firstName} {lastName}</h1>
+              {user?.id == cookies.user?.id ? <Button onClick={() => setEditOpen(!editOpen)}>Modifier mon profil</Button> : <Button onClick={(e) => handleSub(e, user?.id)}>{isFollow ? "Unfollow" : "Follow"}</Button>}
             </div>
             <div className="profil__details">
-              <img src={user?.avatar} alt='User avatar'></img>
-              <div className="user__stats">
-                  <div>
-                    <h2>{followCounter}</h2>
-                    <p>Abonné{followCounter > 1 ? "s" : ""}</p>
-                  </div>
-                  <div>
-                    <h2>{user?.following.length}</h2>
-                    <p>Abonnement{user?.following.length > 1 ? "s" : ""}</p>
-                  </div>
-                  <div>
-                    <h2>{user?.post.length}</h2>
-                    <p>Post{user?.post.length > 1 ? "s" : ""} publié{user?.post.length > 1 ? "s" : ""}</p>
-                  </div>
-                  <div>
-                    <h2>{user?.like.length}</h2>
-                    <p>Post{user?.like.length > 1 ? "s" : ""} liké{user?.like.length > 1 ? "s" : ""}</p>
-                  </div>
+              <div>
+                <img src={picture ? picture?.picturePreview : user?.avatar } alt='User avatar'></img>
+                <div className="user__stats">
+                    <div>
+                      <h2>{followCounter}</h2>
+                      <p>Abonné{followCounter > 1 ? "s" : ""}</p>
+                    </div>
+                    <div>
+                      <h2>{user?.following.length}</h2>
+                      <p>Abonnement{user?.following.length > 1 ? "s" : ""}</p>
+                    </div>
+                    <div>
+                      <h2>{user?.post.length}</h2>
+                      <p>Post{user?.post.length > 1 ? "s" : ""} publié{user?.post.length > 1 ? "s" : ""}</p>
+                    </div>
+                    <div>
+                      <h2>{user?.like.length}</h2>
+                      <p>Post{user?.like.length > 1 ? "s" : ""} liké{user?.like.length > 1 ? "s" : ""}</p>
+                    </div>
+                </div>
               </div>
+              <q>{bio}</q>
             </div>
           </section>
-          <section id='profil__post'>
-            <h2>{user?.id != cookies.user?.id ? `Post${user?.post.length > 1 ? "s" : ""} de ${user?.firstName}`: `Mes posts`}</h2>
-            <div className='profil__post__container'>
-              {user?.post.length ? user?.post.map((post, index) => (
-                <Link href={`/post/${post.id}`} key={index}>
-                  <a>
-                    <img src={post.content} ></img>
-                  </a>
-                </Link>
-              )) : <h4>{user?.firstName} n&apos;a encore rien publié</h4>}
-            </div>
-          </section>
+          {editOpen ? <EditProfil setEditOpen={setEditOpen} password={password} setPassword={setPassword} passwordConfirm={passwordConfirm} setPasswordConfirm={setPasswordConfirm} setFirstName={setFirstName} firstName={firstName} bio={bio} setBio={setBio} avatar={avatar} setAvatar={setAvatar} picture={picture} setPicture={setPicture} lastName={lastName} setLastName={setLastName} user={user}></EditProfil> : <PostProfil user={user}></PostProfil>}
+          
           {canShare ? <Button onClick={(e: Event) => handleShare(e)}>
               Partager ce profil
             </Button> : ""}

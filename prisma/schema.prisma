@@ -18,7 +18,7 @@ model User {
   email        String   @unique
   password     String
   role         Role     @default(USER)
-  avatar       String?
+  avatar       String   @default("/img/user.webp")
   bio          String?
   createdAt    DateTime @default(now())
   modifiedAt   DateTime @default(now())

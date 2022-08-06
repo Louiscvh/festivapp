@@ -20,7 +20,6 @@ export default function Filters({activeFilters, setActiveFilters}) {
     const festival = ["Hellfest", "Solidays"]
 
     const handleRemoveFilter = (e, filter) => {
-      console.log(filter)
       e.preventDefault()
       const newActiveFilter = activeFilters.filter(active => active.value != filter)
       setActiveFilters(newActiveFilter)

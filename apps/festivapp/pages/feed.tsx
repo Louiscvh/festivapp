@@ -75,6 +75,8 @@ const StyledPage = styled.div`
             }
             img {
                 height: 50px;
+                border-radius: 8px;
+                aspect-ratio: 1/1;
             }
         }
 
@@ -148,7 +150,7 @@ export default function Feed() {
                             <div>
                             <Link href={`/profil/${user?.id}`}>
                                 <a>
-                                    <img src='img/user.webp'></img>
+                                    <img src={user?.avatar}></img>
                                     <div>
                                         <h3>{user?.firstName} {user?.lastName}</h3>
                                         <p>{user?.follower.length} abonné{user?.follower.length > 1 ? "s" : ""} {user?.following.length} abonnement{user?.following.length > 1 ? "s" : ""}</p>
