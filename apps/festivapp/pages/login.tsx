@@ -74,7 +74,7 @@ const StyledPage = styled.div`
   .login__remember {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.8rem;
     label {
         width: fit-content;
         white-space: nowrap;
@@ -123,7 +123,7 @@ export default function Login() {
                                     <input onChange={(e) => setPassword(e.target.value)} required type="password" name="email" id="password" placeholder="Votre mot de passe" />
                                     <div className="login__remember">
                                         <label htmlFor="remember">Se souvenir de moi</label>
-                                        <input id="remember" type="checkbox" onChange={(e) => setRemenber(!remenber)} value={remenber} />
+                                        <input id="remember" type="checkbox" onChange={() => setRemenber(!remenber)} checked={remenber} />
                                     </div>
                                     <Button submit>Se connecter</Button>
                                 </form>
