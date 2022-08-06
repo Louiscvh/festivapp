@@ -4,6 +4,8 @@ import Container from '../components/Container';
 import { useEffect, useState } from 'react';
 import Skeleton from '../components/Skeleton';
 import Link from 'next/link';
+import { useCookies } from 'react-cookie';
+import { useRouter } from 'next/router';
 
 const StyledPage = styled.main`
     .explore__container {
@@ -25,10 +27,13 @@ const StyledPage = styled.main`
 `
 
 export default function Explore() {
-
+    const [cookies, , ] = useCookies(['user']);
     const [explore, setExplore] = useState([]);
-
+    const router = useRouter()
     useEffect(() => {
+        if(!cookies.user){
+            router.push('/')
+        }
         fetch('/api/post/getAll')
         .then(res => res.json())
         .then(data => setExplore(data))

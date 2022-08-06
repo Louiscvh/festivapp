@@ -92,6 +92,9 @@ export default function Post() {
     const router = useRouter()
  
     useEffect(() => {
+        if(!cookies.user){
+            router.push('/')
+        }
         const fetchData = async () => {
             fetch(`/api/post/${router.query.id}`)
             .then(r => r.json())
@@ -103,7 +106,7 @@ export default function Post() {
             })
             }
         fetchData()
-    }, [router, cookies.user?.id])
+    }, [router, cookies.user?.id, cookies.user])
 
     const handleComment = async(e) => {
         e.preventDefault()

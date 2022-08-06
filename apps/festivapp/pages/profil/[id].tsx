@@ -6,11 +6,11 @@ import { useState, useEffect } from 'react';
 import { globalColors } from '../_app';
 import Button from '../../components/Button';
 import Head from 'next/head';
-import Link from 'next/link';
 import Skeleton from '../../components/Skeleton';
 import { useCookies } from 'react-cookie';
 import EditProfil from '../../components/profil/EditProfil';
 import PostProfil from '../../components/profil/PostProfil';
+
 const StyledPage = styled.div`
   display: flex;
   flex-direction: column;
@@ -98,6 +98,9 @@ export default function Profil() {
 
   const router = useRouter()
   useEffect(() => {
+    if(!cookies.user){
+      router.push('/')
+    }
     fetch(`/api/user/${router.query.id}`)
     .then(r => r.json())
     .then(data => {
@@ -122,7 +125,7 @@ export default function Profil() {
     }
   }
 
-  const handleSub = async (e: any, followingId) => {
+  const handleSub = async (e, followingId) => {
     e.preventDefault()
     setIsFollow(!isFollow)
     setFollowCounter(isFollow ? followCounter - 1 : followCounter + 1)
@@ -147,7 +150,7 @@ export default function Profil() {
     removeCookie('user', { path: '/' });
     router.push('/')
   }
-
+  console.log(bio)
   return (
     <Container>
       <Head>
@@ -183,7 +186,7 @@ export default function Profil() {
                     </div>
                 </div>
               </div>
-              <q>{bio}</q>
+              {bio ?  <q>{bio}</q> : null}
             </div>
           </section>
           {editOpen ? <EditProfil setEditOpen={setEditOpen} password={password} setPassword={setPassword} passwordConfirm={passwordConfirm} setPasswordConfirm={setPasswordConfirm} setFirstName={setFirstName} firstName={firstName} bio={bio} setBio={setBio} avatar={avatar} setAvatar={setAvatar} picture={picture} setPicture={setPicture} lastName={lastName} setLastName={setLastName} user={user}></EditProfil> : <PostProfil user={user}></PostProfil>}

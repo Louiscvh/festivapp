@@ -33,7 +33,7 @@ export default function FollowsSuggestions() {
     const router = useRouter();
     useEffect(() => {
         if(!cookies.user){
-            router.push('/login')
+            router.push('/')
         } else {
             fetch(`/api/user/suggestions/${cookies.user?.id}/10`)
             .then(response => response.json())

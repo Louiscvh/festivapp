@@ -10,6 +10,7 @@ import { InferGetStaticPropsType } from 'next';
 import { json } from 'stream/consumers';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const StyledPage = styled.div`
 margin-bottom: 2rem;
@@ -78,6 +79,12 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
     const [likeVisible, setLikeVisible] = useState('true');
 
     const router = useRouter()
+
+    useEffect(() => {
+        if (!cookies.user) {
+            router.push('/')
+        }
+    }, [router, cookies.user])
 
     const handleSubmit = async(e) => {
         e.preventDefault()
