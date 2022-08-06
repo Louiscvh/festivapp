@@ -55,9 +55,10 @@ const StyledPage = styled.div`
     }
     
 `
-export default function CheckboxFilter({datas, title}) {
+export default function CheckboxFilter({activeFilters, setActiveFilters, datas, title, fieldTarget}) {
   const [open, setOpen] = useState(false)
-    const inputRef = useRef(null)
+  const inputRef = useRef(null)
+  const [activeCount, setActiveCount] = useState(0)
   /**
     * Detect if your click outside the ref
     * @param ref Element to detect click outside
@@ -78,13 +79,24 @@ export default function CheckboxFilter({datas, title}) {
 
   useOutside(inputRef)
 
+  const handleChange = (e, value) => {
+    if(e.target.checked) {
+        setActiveFilters([...activeFilters, {name: title, value}])
+        setActiveCount(activeCount + 1)
+    } else {
+        setActiveFilters(activeFilters.filter(item => item.value !== value))
+        setActiveCount(activeCount - 1)
+    }
+  }
+
+
   return (
     <StyledPage ref={inputRef} onClick={() => setOpen(!open)}>
-        <button>{open ? "-" : "+"} {title}</button>
-        <div  style={{display: !open ? "none" : "flex"}}>
+        <button>{open ? "-" : "+"} Filter par {title} ({activeCount})</button>
+        <div style={{display: open ? "flex" : "none"}}>
             {datas.map((data, i) => (
                 <label key={i}>
-                    <input type="checkbox"  />
+                    <input type="checkbox" onChange={(e) => handleChange(e, data)}/>
                     {data}
                 </label>
             ))}

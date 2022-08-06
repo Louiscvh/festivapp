@@ -95,8 +95,7 @@ export default function Feed() {
     const [feed, setFeed] = useState([]);
     const [user, setUser] = useState(null)
     const router = useRouter()
-
-    
+    const [activeFilters, setActiveFilters] = useState([])
 
     useEffect(() => {
         if(!cookies.user){
@@ -135,7 +134,7 @@ export default function Feed() {
                     </div>
                 </div>
                 <hr></hr>
-                <Filters />
+                <Filters activeFilters={activeFilters} setActiveFilters={setActiveFilters}/>
                 <div className='feed__container'>
                     <FeedContainer>
                     {feed.length ?

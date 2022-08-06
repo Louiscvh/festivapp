@@ -103,7 +103,7 @@ export default function Post() {
             })
             }
         fetchData()
-    }, [router])
+    }, [router, cookies.user?.id])
 
     const handleComment = async(e) => {
         e.preventDefault()

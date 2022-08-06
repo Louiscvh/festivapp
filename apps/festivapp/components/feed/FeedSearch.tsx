@@ -20,6 +20,10 @@ const StyledPage = styled.div`
     top: 60px;
     z-index: 1;
 
+    h5 {
+      margin-bottom: 0.3rem;
+    }
+
     a {
       cursor: pointer;
       border-radius: 8px;
@@ -45,9 +49,10 @@ const StyledPage = styled.div`
 `
 
 export default function FeedSearch() {
-  const [searchList, setSearchList] = useState([]);
+  const [searchList, setSearchList] = useState(null);
   const searchInput = useRef(null);
-
+  const [open, setOpen] = useState(false);
+  const [empty, setEmpty] = useState(false);
     /**
     * Detect if your click outside the ref
     * @param ref Element to detect click outside
@@ -56,7 +61,7 @@ export default function FeedSearch() {
     useEffect(() => {
       const handleClickOutside = (event) => {
         if (ref.current && !ref.current.contains(event.target)) {
-          setSearchList([])
+          setOpen(false)
         }
       }
       document.addEventListener("click", handleClickOutside);
@@ -70,7 +75,7 @@ export default function FeedSearch() {
 
   const handleSearch = async(e, text) => {
     e.preventDefault()
-    if(text.length > 2){
+    if(text.length > 1){
       const request = await fetch('/api/user/searchUser', {
         method: 'POST',
         body: JSON.stringify({
@@ -78,19 +83,23 @@ export default function FeedSearch() {
         })
       })
       const data = await request.json()
-      if(request.ok) {
-        console.log(data)
+      if(data.length) {
+        setEmpty(false)
         setSearchList(data)
       } else {
-        setSearchList([])
+        setEmpty(true)
       }
+    } else {
+      setSearchList([])
     }
   }
   return (
-    <StyledPage ref={searchInput}>
-      <input onChange={(e) => handleSearch(e, e.target.value)} placeholder='Chercher...' />
-      {searchList?.length ?
-        <div className="search__container">
+    <StyledPage ref={searchInput} onClick={() => setOpen(true)}>
+      <input onChange={(e) => handleSearch(e, e.target.value)} placeholder='Chercher un nom...' />
+      {searchList && searchList.length > 0 ?
+        <div className="search__container" style={{display: open ? 'flex' : 'none'}}>
+          {empty ? <h5>Aucun résultat</h5> : <>
+          <h5>Résultat{searchList?.length > 1 ? "s" : ""} ({searchList.length})</h5>
           {searchList?.map((user, index) => (
             <Link passHref href={`/profil/${user.id}`}key={index}>
               <a>
@@ -98,7 +107,8 @@ export default function FeedSearch() {
                 <p>{user.firstName} {user.lastName}</p>
               </a>
             </Link>
-          ))}
+          ))}</>}
+          
         </div> : null
       }
       
