@@ -56,6 +56,7 @@ const StyledPage = styled.div`
     height: 80px;
     width: 80px;
     border-radius: 8px;
+    object-fit: cover;
     @media screen and (max-width: 1024px) {
       margin-top: 1rem;
     } 

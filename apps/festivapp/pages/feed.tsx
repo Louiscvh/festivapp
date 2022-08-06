@@ -77,6 +77,7 @@ const StyledPage = styled.div`
                 height: 50px;
                 border-radius: 8px;
                 aspect-ratio: 1/1;
+                object-fit: cover;
             }
         }
 

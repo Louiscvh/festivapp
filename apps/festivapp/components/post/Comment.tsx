@@ -25,6 +25,7 @@ const StyledPage = styled.div`
                 margin-top: 10px;
                 border-radius: 8px;
                 aspect-ratio: 1/1;
+                object-fit: cover;
             }
 
             time {

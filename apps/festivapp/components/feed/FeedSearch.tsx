@@ -41,6 +41,9 @@ const StyledPage = styled.div`
       }
       img {
         height: 30px;
+        border-radius: 8px;
+        object-fit: cover;
+        aspect-ratio: 1/1;
       }
     }
 
