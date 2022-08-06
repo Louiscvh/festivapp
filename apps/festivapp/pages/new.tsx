@@ -79,7 +79,6 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
     const [likeVisible, setLikeVisible] = useState('true');
 
     const router = useRouter()
-
     useEffect(() => {
         if (!cookies.user) {
             router.push('/')
@@ -136,7 +135,7 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
                         <select required onChange={(e) => setFestival(e.target.options[e.target.selectedIndex].value)}>
                             <option selected disabled value="">Choisissez un festival</option>
                             {festivals.map((festival, i) => (
-                                <option key={i} value={festival.id}>{festival.name}</option>
+                                <option key={i} value={festival.name}>{festival.name}</option>
                             ))}
                         </select>
                         <h3>Voulez-vous afficher le nombre de like sur votre post ?</h3>
