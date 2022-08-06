@@ -147,7 +147,6 @@ export default function Profil() {
     router.push('/')
   }
 
-  console.log(cookies.user)
   return (
     <Container>
       <Head>
