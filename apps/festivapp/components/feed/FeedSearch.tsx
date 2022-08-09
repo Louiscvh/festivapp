@@ -1,6 +1,13 @@
-import Link from 'next/link';
+//Hook
 import { useRef, useState, useEffect } from 'react';
+
+//Style
 import styled from 'styled-components';
+
+//Components
+import Link from 'next/link';
+
+//Variable
 import { globalColors } from '../../pages/_app';
 
 const StyledPage = styled.div`
@@ -37,7 +44,7 @@ const StyledPage = styled.div`
       }
 
       p {
-        font-size: 0.8rem
+        font-size: 0.8rem;
       }
       img {
         height: 30px;
@@ -46,75 +53,95 @@ const StyledPage = styled.div`
         aspect-ratio: 1/1;
       }
     }
-
-    
   }
-`
+`;
 
 export default function FeedSearch() {
+  //State
   const [searchList, setSearchList] = useState(null);
-  const searchInput = useRef(null);
   const [open, setOpen] = useState(false);
   const [empty, setEmpty] = useState(false);
-    /**
-    * Detect if your click outside the ref
-    * @param ref Element to detect click outside
-    */
+  //Ref
+  const searchInput = useRef(null);
+
+  /**
+   * Detect if your click outside the ref
+   * @param ref Element to detect click outside
+   */
   const useOutside = (ref) => {
     useEffect(() => {
       const handleClickOutside = (event) => {
         if (ref.current && !ref.current.contains(event.target)) {
-          setOpen(false)
+          setOpen(false);
         }
-      }
-      document.addEventListener("click", handleClickOutside);
+      };
+      document.addEventListener('click', handleClickOutside);
       return () => {
-        document.removeEventListener("click", handleClickOutside);
+        document.removeEventListener('click', handleClickOutside);
       };
     }, [ref]);
-  }
+  };
 
-  useOutside(searchInput)
+  useOutside(searchInput);
 
-  const handleSearch = async(e, text) => {
-    e.preventDefault()
-    if(text.length > 1){
+  /**
+   * Search user by firstname and lastname
+   * @param e Event from input
+   * @param text Current text in input
+   */
+  const handleSearch = async (e, text) => {
+    e.preventDefault();
+    if (text.length > 1) {
       const request = await fetch('/api/user/searchUser', {
         method: 'POST',
         body: JSON.stringify({
-          text
-        })
-      })
-      const data = await request.json()
-      if(data.length) {
-        setEmpty(false)
-        setSearchList(data)
+          text,
+        }),
+      });
+      const data = await request.json();
+      if (data.length) {
+        setEmpty(false);
+        setSearchList(data);
       } else {
-        setEmpty(true)
+        setEmpty(true);
       }
     } else {
-      setSearchList([])
+      setSearchList([]);
     }
-  }
+  };
   return (
     <StyledPage ref={searchInput} onClick={() => setOpen(true)}>
-      <input onChange={(e) => handleSearch(e, e.target.value)} placeholder='Chercher un nom...' />
-      {searchList && searchList.length > 0 ?
-        <div className="search__container" style={{display: open ? 'flex' : 'none'}}>
-          {empty ? <h5>Aucun résultat</h5> : <>
-          <h5>Résultat{searchList?.length > 1 ? "s" : ""} ({searchList.length})</h5>
-          {searchList?.map((user, index) => (
-            <Link passHref href={`/profil/${user.id}`}key={index}>
-              <a>
-                <img src={user.avatar} alt={user.firstName} />
-                <p>{user.firstName} {user.lastName}</p>
-              </a>
-            </Link>
-          ))}</>}
-          
-        </div> : null
-      }
-      
+      <input
+        onChange={(e) => handleSearch(e, e.target.value)}
+        placeholder="Chercher un nom..."
+      />
+      {searchList && searchList.length > 0 ? (
+        <div
+          className="search__container"
+          style={{ display: open ? 'flex' : 'none' }}
+        >
+          {empty ? (
+            <h5>Aucun résultat</h5>
+          ) : (
+            <>
+              <h5>
+                Résultat{searchList?.length > 1 ? 's' : ''} ({searchList.length}
+                )
+              </h5>
+              {searchList?.map((user, index) => (
+                <Link passHref href={`/profil/${user.id}`} key={index}>
+                  <a>
+                    <img src={user.avatar} alt={user.firstName} />
+                    <p>
+                      {user.firstName} {user.lastName}
+                    </p>
+                  </a>
+                </Link>
+              ))}
+            </>
+          )}
+        </div>
+      ) : null}
     </StyledPage>
-  )
+  );
 }

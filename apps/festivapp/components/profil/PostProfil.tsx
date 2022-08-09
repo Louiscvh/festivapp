@@ -1,6 +1,11 @@
-import Link from "next/link";
-import { useCookies } from "react-cookie";
+//Style
 import styled from "styled-components";
+
+//Hook
+import { useCookies } from "react-cookie";
+
+//Components
+import Link from "next/link";
 
 const StyledPage = styled.section`
     h2 {
@@ -40,8 +45,8 @@ const StyledPage = styled.section`
     }
 `
 export default function PostProfil({user}) {
-
-  const [cookies, , ] = useCookies(['user']);
+  //Cookie
+  const [cookies] = useCookies(['user']);
 
   return (
     <StyledPage>

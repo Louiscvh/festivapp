@@ -1,12 +1,16 @@
+//Hook
 import { useEffect, useState } from "react";
 import { useCookies } from 'react-cookie';
+
+//Style
 import styled from "styled-components"
+
+//Components
 import Skeleton from "../Skeleton";
 import UserCard from "../UserCard";
 
 const StyledPage = styled.div`
-
-.suggestions__container {
+  .suggestions__container {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -17,13 +21,17 @@ const StyledPage = styled.div`
 `
 
 export default function Suggestions({userFollow}) {
+    //State
     const [suggestions, setSuggestions] = useState([]);
+    //Cookie
     const [cookies, ,] = useCookies(['user']);
+
     useEffect(() => {
         fetch(`/api/user/suggestions/${cookies.user?.id}/3`)
         .then(response => response.json())
         .then(data => setSuggestions(data)) 
     }, [cookies])
+    
   return (
     <StyledPage>
         <section>

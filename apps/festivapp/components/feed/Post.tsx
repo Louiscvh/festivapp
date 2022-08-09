@@ -1,11 +1,20 @@
-import Link from "next/link";
-import styled from "styled-components"
-import { globalColors } from '../../pages/_app';
-import Moment from 'react-moment';
-import 'moment/locale/fr';
-import Like from "./Like";
+//Hook
 import { useCookies } from 'react-cookie';
 import { useEffect, useState } from "react";
+
+//Moment
+import Moment from 'react-moment';
+import 'moment/locale/fr';
+
+//Components
+import Link from "next/link";
+import Like from "./Like";
+
+//Style
+import styled from "styled-components"
+
+//Variable
+import { globalColors } from '../../pages/_app';
 
 const StyledPage = styled.div`
     padding: 1rem;
@@ -73,14 +82,15 @@ const StyledPage = styled.div`
 `
 
 export default function Post({userLike, data}) {
-    console.log(data)
+    //Cookie
     const [cookies, , ] = useCookies(['user']);
+    //State
     const [likeCount, setLikeCount] = useState(data.like.length);
     const [isLiked, setIsLiked] = useState(null);
 
    useEffect(() => {
     setIsLiked(userLike?.some( like => like['postId'] == data.id))
-   }, [userLike, cookies.user])
+   }, [userLike, cookies.user, data.id])
 
   return (
     <StyledPage>

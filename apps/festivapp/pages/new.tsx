@@ -1,15 +1,27 @@
-import Container from '../components/Container';
-import { getLayout } from '../layouts/MenuLayout';
-import styled from 'styled-components';
-import Button from '../components/Button';
-import { globalColors } from './_app';
-import { PrismaClient } from '@prisma/client';
-import { useState } from 'react';
-import NewPreview from '../components/new/NewPreview';
-import { InferGetStaticPropsType } from 'next';
-import { useCookies } from 'react-cookie';
+//Hooks
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+import { useEffect, useState } from 'react';
+
+//Style
+import styled from 'styled-components';
+
+
+//Components
+import Button from '../components/Button';
+import NewPreview from '../components/new/NewPreview';
+
+//Functions and variables
+import { globalColors } from './_app';
+import { getLayout } from '../layouts/MenuLayout';
+
+//Prisma
+import { PrismaClient } from '@prisma/client';
+
+//Type
+import { InferGetStaticPropsType } from 'next';
+
+//Toast
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -72,20 +84,28 @@ form {
 }
 `
 export default function New({festivals}: InferGetStaticPropsType<typeof getStaticProps>) {
-    const [cookies, setCookies ,] = useCookies(['user'])
+
+    //Cookie
+    const [cookies] = useCookies(['user'])
+    //State
     const [picture, setPicture] = useState(null);
     const [description, setDescription] = useState('');
     const [location, setLocation] = useState('')
     const [festival, setFestival] = useState(null);
     const [likeVisible, setLikeVisible] = useState(false);
-
+    //Router
     const router = useRouter()
+
     useEffect(() => {
         if (!cookies.user) {
             router.push('/')
         }
     }, [router, cookies.user])
 
+    /**
+     * Create post
+     * @param e Event from input
+     */
     const handleSubmit = async(e) => {
         e.preventDefault()
         toast.success('Votre post à bien été créé !', {
@@ -128,7 +148,6 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
     return (
     <StyledPage>
         <ToastContainer/>
-        <Container>
             <main>
                 <section>
                     <h1>Ajouter un post</h1>
@@ -173,7 +192,6 @@ export default function New({festivals}: InferGetStaticPropsType<typeof getStati
                     <NewPreview picture={picture} description={description} location={location} festival={festival} likeVisible={likeVisible}></NewPreview>
                 </section>
             </main>
-        </Container>
     </StyledPage>
   )
 }

@@ -1,8 +1,11 @@
+//functions
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { createGlobalStyle } from 'styled-components';
 import type { NextPage } from 'next'
 import type { ReactElement, ReactNode } from 'react'
+
+//Style
+import { createGlobalStyle } from 'styled-components';
 
 export const globalColors = {
   white: '#fff',

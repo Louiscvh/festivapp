@@ -1,18 +1,23 @@
-import { PrismaClient } from '@prisma/client';
-import { useState } from 'react';
-import { getLayout } from '../../layouts/MenuLayout';
+//Hook
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useCookies } from 'react-cookie';
+
+//Style
 import styled from 'styled-components';
-import Container from '../../components/Container';
+
+//Components
 import UserCard from '../../components/UserCard';
 import Comment from '../../components/post/Comment';
 import Like from '../../components/feed/Like';
-import { globalColors } from '../_app';
 import Button from '../../components/Button';
-import { useEffect } from 'react';
-import { useCookies } from 'react-cookie';
-import { useRouter } from 'next/router';
 import Skeleton from '../../components/Skeleton';
-const StyledPage = styled.div`
+
+//Functions & variable
+import { getLayout } from '../../layouts/MenuLayout';
+import { globalColors } from '../_app';
+
+const StyledPage = styled.main`
     display: flex;
     gap: 2rem;
     align-items: flex-start;
@@ -82,13 +87,15 @@ const StyledPage = styled.div`
     }
 `
 export default function Post() {
+    //States
     const [post, setPost] = useState(null)
     const [likeCount, setLikeCount] = useState(null)
     const [isLiked, setIsLiked] = useState(null)
-    const [cookies, , ] = useCookies(['user']);
     const [postComment, setPostComment] = useState(null)
     const [comment, setComment] = useState('')
-
+    //Cookie
+    const [cookies] = useCookies(['user']);
+    //Router
     const router = useRouter()
  
     useEffect(() => {
@@ -108,6 +115,10 @@ export default function Post() {
         fetchData()
     }, [router, cookies.user?.id, cookies.user])
 
+    /**
+     * Comment a post
+     * @param e Event from input
+     */
     const handleComment = async(e) => {
         e.preventDefault()
         setComment('')
@@ -121,7 +132,11 @@ export default function Post() {
             })
         })
     }
-
+    /**
+     * Delete a post
+     * @param e Event from input
+     * @param id Id of the post to delete
+     */
     const handleDelete = (e, postId) => {
         e.preventDefault()
         fetch(`/api/post/deletePost/`, {
@@ -133,7 +148,6 @@ export default function Post() {
         router.push('/feed')
     }
   return (
-    <Container>
         <StyledPage>
             {post ?
             <>
@@ -166,7 +180,6 @@ export default function Post() {
             </> 
             : <Skeleton width={700} height={500}></Skeleton>}
         </StyledPage>
-    </Container>
   )
 }
     

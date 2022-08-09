@@ -1,11 +1,18 @@
-import Link from 'next/link';
+//Hooks
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
+import { useState } from 'react';
+
+//Style
 import styled from 'styled-components';
-import { globalColors, globalTransitions } from '../pages/_app'
+
+//Components
 import Button from './Button';
 import Container from './Container';
-import { useState } from 'react';
+import Link from 'next/link';
+
+//Variables
+import { globalColors, globalTransitions } from '../pages/_app'
 
 const StyledPage = styled.header`
   padding: 10px;
@@ -72,7 +79,7 @@ const StyledPage = styled.header`
   }
 `;
 
-const StyledMenuBurger = styled.div`
+const StyledMenuBurger = styled.aside`
   height: 100vh;
   width: 100vw;
   background-color: ${globalColors.white};
@@ -105,15 +112,24 @@ const StyledMenuBurger = styled.div`
 `
 
 export default function Header() {
-  const [cookie,, removeCookie] = useCookies(['user']);
-  const router = useRouter()
+  //State
   const [mobileOpen, setMobileOpen] = useState(null)
+  //Cookie
+  const [cookie,, removeCookie] = useCookies(['user']);
+  //Router
+  const router = useRouter()
+
+  /**
+   * Logout function
+   * @param e Event from input
+   */
   const handleLogout = (e) => {
     e.preventDefault()
     setMobileOpen(false)
     removeCookie('user', { path: '/' });
     router.push('/login')
   }
+  
   return (
     <>
       <StyledMenuBurger style={{transform: `translateX(${mobileOpen ? "0%" : "100%"})`}}>

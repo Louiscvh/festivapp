@@ -1,4 +1,8 @@
+//Style
 import styled from 'styled-components'
+
+//Components
+import Container from '../components/Container';
 import Header from '../components/Header';
 import IntroductionWrapper from '../components/index/IntroductionWrapper/IntroductionWrapper';
 
@@ -14,9 +18,10 @@ export default function DashboardLayout({ children }) {
         <Header />
         <IntroductionWrapper />
         <div className="layout__children">
+          <Container>
             {children}
+          </Container>
         </div>
-        
       </MenuLayoutStyle>
     )
   }

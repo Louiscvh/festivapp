@@ -1,27 +1,35 @@
+//Hooks
 import { useRouter } from 'next/router';
-import styled from 'styled-components';
-import Container from '../../components/Container';
-import { getLayout } from '../../layouts/MenuLayout';
 import { useState, useEffect } from 'react';
-import { globalColors } from '../_app';
-import Button from '../../components/Button';
-import Head from 'next/head';
-import Skeleton from '../../components/Skeleton';
 import { useCookies } from 'react-cookie';
+
+//Style
+import styled from 'styled-components';
+
+//Components
+import Skeleton from '../../components/Skeleton';
 import EditProfil from '../../components/profil/EditProfil';
 import PostProfil from '../../components/profil/PostProfil';
+import Button from '../../components/Button';
+import Head from 'next/head';
+
+//Functions & variables
+import { getLayout } from '../../layouts/MenuLayout';
+import { globalColors } from '../_app';
+
+//Toast
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const StyledPage = styled.div`
+const StyledPage = styled.main`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 2rem;
   margin-bottom: 2rem;
   button {
-      z-index: 1;
-    }
+    z-index: 1;
+  }
   section {
     max-width: 700px;
     width: calc(100% - 4rem);
@@ -41,20 +49,20 @@ const StyledPage = styled.div`
       align-items: center;
       gap: 2rem;
       margin-bottom: 0rem;
-  } 
+    }
   }
 
   .profil__details {
-    & > div{
-    display: flex;
-    align-items: flex-start;
-    gap: 2rem;
-    margin: 2rem 0px;
+    & > div {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      margin: 2rem 0px;
       @media screen and (max-width: 1024px) {
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-      } 
+      }
     }
 
     q {
@@ -69,7 +77,7 @@ const StyledPage = styled.div`
     object-fit: cover;
     @media screen and (max-width: 1024px) {
       margin-top: 1rem;
-    } 
+    }
   }
 
   .user__stats {
@@ -84,135 +92,204 @@ const StyledPage = styled.div`
       background-color: ${globalColors.darkGrey};
     }
   }
-
-  
 `;
 
 export default function Profil() {
+
+  //States
   const [user, setUser] = useState(null);
   const [canShare, setCanShare] = useState(false);
-  const [cookies, ,removeCookie] = useCookies(['user']);
   const [isFollow, setIsFollow] = useState(null);
-  const [followCounter, setFollowCounter] = useState(0)
+  const [followCounter, setFollowCounter] = useState(0);
   const [editOpen, setEditOpen] = useState(false);
-
   const [picture, setPicture] = useState(null);
   const [avatar, setAvatar] = useState(null);
-  const [bio, setBio] = useState(null)
-  const [firstName, setFirstName] = useState(null)
-  const [lastName, setLastName] = useState(user?.lastName)
-  const [password, setPassword] = useState('')
-  const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [bio, setBio] = useState(null);
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(user?.lastName);
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  //Cookies
+  const [cookies, , removeCookie] = useCookies(['user']);
+  //Router
+  const router = useRouter();
 
-
-  const router = useRouter()
   useEffect(() => {
-    if(!cookies.user){
-      router.push('/')
+    if (!cookies.user) {
+      router.push('/');
     }
     fetch(`/api/user/${router.query.id}`)
-    .then(r => r.json())
-    .then(data => {
-      setUser(data)
-      setBio(data?.bio)
-      setFirstName(data?.firstName)
-      setLastName(data?.lastName)
+      .then((r) => r.json())
+      .then((data) => {
+        setUser(data);
+        setBio(data?.bio);
+        setFirstName(data?.firstName);
+        setLastName(data?.lastName);
 
-      setIsFollow(data.follower.some(follow => follow['followerId'] == cookies.user?.id))
-      setFollowCounter(data.follower.length)
-    })
-    if(navigator.share) setCanShare(true)
-  }, [router, cookies.user?.id, user?.bio, user?.firstName, user?.lastName])
+        setIsFollow(
+          data.follower.some(
+            (follow) => follow['followerId'] == cookies.user?.id
+          )
+        );
+        setFollowCounter(data.follower.length);
+      });
+    if (navigator.share) setCanShare(true);
+  }, [router, cookies.user?.id, user?.bio, user?.firstName, user?.lastName, cookies.user]);
+
+  /**
+   * Share the page with the API SHARE
+   * @param e Event from input
+   */
   const handleShare = (e: Event) => {
     e.preventDefault();
-    if(navigator) {
+    if (navigator) {
       navigator.share({
         title: `Festivapp | ${user?.firstName} ${user?.lastName}`,
         text: `Festivapp | ${user?.firstName} ${user?.lastName}`,
         url: `/profil/${user?.id}`,
-      })
+      });
     }
-  }
+  };
 
+  /**
+   * Sub a user by other one
+   * @param e Event from input
+   * @param followingId Id of the user to follow
+   */
   const handleSub = async (e, followingId) => {
-    e.preventDefault()
-    setIsFollow(!isFollow)
-    setFollowCounter(isFollow ? followCounter - 1 : followCounter + 1)
+    e.preventDefault();
+    setIsFollow(!isFollow);
+    setFollowCounter(isFollow ? followCounter - 1 : followCounter + 1);
 
     await fetch(`/api/follow`, {
-        method: 'POST',
-        body: JSON.stringify({
-            followerId: cookies.user?.id,
-            followingId
-        })
-    })
-  }
-
-  const handleDelete = (e, userId) => {
-    e.preventDefault()
-    fetch('/api/user/deleteUser', {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({
-        userId
-      })
-    })
+        followerId: cookies.user?.id,
+        followingId,
+      }),
+    });
+  };
+
+  /**
+   * Delete a profile
+   * @param e Event from input
+   * @param userId Id of the user to delete
+   */
+  const handleDelete = (e, userId) => {
+    e.preventDefault();
+    fetch('/api/user/deleteUser', {
+      method: 'POST',
+      body: JSON.stringify({
+        userId,
+      }),
+    });
     removeCookie('user', { path: '/' });
-    router.push('/')
-  }
-  console.log(bio)
+    router.push('/');
+  };
+
   return (
-    <Container>
+    <>
       <Head>
-        <title>Festivapp | {user?.firstName} {user?.lastName} </title>
+        <title>
+          Festivapp | {user?.firstName} {user?.lastName}{' '}
+        </title>
       </Head>
       <ToastContainer />
       <StyledPage>
-      {user ? 
-        <>
-          <section>
-            <div className="profil__header">
-              <h1>{firstName} {lastName}</h1>
-              {user?.id == cookies.user?.id ? <Button onClick={() => setEditOpen(!editOpen)}>Modifier mon profil</Button> : <Button onClick={(e) => handleSub(e, user?.id)}>{isFollow ? "Unfollow" : "Follow"}</Button>}
-            </div>
-            <div className="profil__details">
-              <div>
-                <img src={picture ? picture?.picturePreview : user?.avatar } alt='User avatar'></img>
-                <div className="user__stats">
+        {user ? (
+          <>
+            <section>
+              <div className="profil__header">
+                <h1>
+                  {firstName} {lastName}
+                </h1>
+                {user?.id == cookies.user?.id ? (
+                  <Button onClick={() => setEditOpen(!editOpen)}>
+                    Modifier mon profil
+                  </Button>
+                ) : (
+                  <Button onClick={(e) => handleSub(e, user?.id)}>
+                    {isFollow ? 'Unfollow' : 'Follow'}
+                  </Button>
+                )}
+              </div>
+              <div className="profil__details">
+                <div>
+                  <img
+                    src={picture ? picture?.picturePreview : user?.avatar}
+                    alt="User avatar"
+                  ></img>
+                  <div className="user__stats">
                     <div>
                       <h2>{followCounter}</h2>
-                      <p>Abonné{followCounter > 1 ? "s" : ""}</p>
+                      <p>Abonné{followCounter > 1 ? 's' : ''}</p>
                     </div>
                     <div>
                       <h2>{user?.following.length}</h2>
-                      <p>Abonnement{user?.following.length > 1 ? "s" : ""}</p>
+                      <p>Abonnement{user?.following.length > 1 ? 's' : ''}</p>
                     </div>
                     <div>
                       <h2>{user?.post.length}</h2>
-                      <p>Post{user?.post.length > 1 ? "s" : ""} publié{user?.post.length > 1 ? "s" : ""}</p>
+                      <p>
+                        Post{user?.post.length > 1 ? 's' : ''} publié
+                        {user?.post.length > 1 ? 's' : ''}
+                      </p>
                     </div>
                     <div>
                       <h2>{user?.like.length}</h2>
-                      <p>Post{user?.like.length > 1 ? "s" : ""} liké{user?.like.length > 1 ? "s" : ""}</p>
+                      <p>
+                        Post{user?.like.length > 1 ? 's' : ''} liké
+                        {user?.like.length > 1 ? 's' : ''}
+                      </p>
                     </div>
+                  </div>
                 </div>
+                {bio ? <q>{bio}</q> : null}
               </div>
-              {bio ?  <q>{bio}</q> : null}
-            </div>
-          </section>
-          {editOpen ? <EditProfil toast={toast} setEditOpen={setEditOpen} password={password} setPassword={setPassword} passwordConfirm={passwordConfirm} setPasswordConfirm={setPasswordConfirm} setFirstName={setFirstName} firstName={firstName} bio={bio} setBio={setBio} avatar={avatar} setAvatar={setAvatar} picture={picture} setPicture={setPicture} lastName={lastName} setLastName={setLastName} user={user}></EditProfil> : <PostProfil user={user}></PostProfil>}
-          
-          {canShare ? <Button onClick={(e: Event) => handleShare(e)}>
-              Partager ce profil
-            </Button> : ""}
-              {user?.id == cookies.user?.id &&
+            </section>
+            {editOpen ? (
+              <EditProfil
+                toast={toast}
+                setEditOpen={setEditOpen}
+                password={password}
+                setPassword={setPassword}
+                passwordConfirm={passwordConfirm}
+                setPasswordConfirm={setPasswordConfirm}
+                setFirstName={setFirstName}
+                firstName={firstName}
+                bio={bio}
+                setBio={setBio}
+                avatar={avatar}
+                setAvatar={setAvatar}
+                picture={picture}
+                setPicture={setPicture}
+                lastName={lastName}
+                setLastName={setLastName}
+                user={user}
+              ></EditProfil>
+            ) : (
+              <PostProfil user={user}></PostProfil>
+            )}
+
+            {canShare ? (
+              <Button onClick={(e: Event) => handleShare(e)}>
+                Partager ce profil
+              </Button>
+            ) : (
+              ''
+            )}
+            {user?.id == cookies.user?.id && (
               <Button onClick={(e) => handleDelete(e, user?.id)}>
                 Supprimer mon compte
-              </Button>}
-        </>
-        : <Skeleton width={500} height={500}></Skeleton>}
+              </Button>
+            )}
+          </>
+        ) : (
+          <Skeleton width={500} height={500}></Skeleton>
+        )}
       </StyledPage>
-    </Container>
-  )
+    </>
+  );
 }
 
 Profil.getLayout = getLayout;

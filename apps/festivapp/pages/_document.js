@@ -1,5 +1,7 @@
-/* eslint-disable react/display-name */
+//Components
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+
+//Style
 import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
