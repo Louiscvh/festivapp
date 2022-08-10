@@ -1,4 +1,5 @@
 //Hook
+import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 
 //Style
@@ -9,6 +10,11 @@ import { globalColors } from '../../pages/_app';
 
 //Components
 import Button from '../Button';
+
+//Toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const StyledPage = styled.section`
   h2 {
@@ -81,6 +87,9 @@ export default function EditProfil({
 
   //Cookie
   const [, setCookie] = useCookies(['user']);
+
+  //State
+  const [oldPass, setOldPass] = useState('');
   
   /**
    * Save the picture
@@ -144,22 +153,66 @@ export default function EditProfil({
    * Modify the user password
    * @param e Event from input
    */
-  const handlePassword = (e) => {
+  const handlePassword = async(e) => {
     e.preventDefault();
-    if (password || passwordConfirm) {
+    if (password || passwordConfirm || oldPass) {
       if (password == passwordConfirm) {
-        console.log('password ok');
-        console.log(password);
+        const request = await fetch('/api/user/updatePass', {
+          method: 'POST',
+          body: JSON.stringify({
+            oldPass,
+            userId: user?.id,
+            password,
+          }),
+        })
+        const result = await request.json();
+        if(request.ok) {
+          setOldPass('');
+          setPassword('');
+          setPasswordConfirm('');
+          toast.success('Votre mot de passe a été modifié !', {
+            position: 'bottom-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } else {
+          toast.error(result, {
+            position: 'bottom-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
       } else {
-        console.log('password not ok');
+        toast.error('Les deux mots de passe de sont pas identiques !', {
+          position: 'bottom-center',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     } else {
-      console.log('password empty');
+      toast.error('Le mot de passe ne peut pas être vide !', {
+        position: 'bottom-center',
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
   return (
     <StyledPage>
+      <ToastContainer />
       <h2>Modifier mon profil</h2>
       <form onSubmit={(e) => handlePicture(e)}>
         <div>
@@ -223,6 +276,12 @@ export default function EditProfil({
       <form className="edit__password" onSubmit={(e) => handlePassword(e)}>
         <div>
           <h3>Modifier mon mot de passe</h3>
+          <input
+            value={oldPass}
+            onChange={(e) => setOldPass(e.target.value)}
+            type="password"
+            placeholder="Ancien mot de passe"
+          ></input>
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
