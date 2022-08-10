@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 //Components
 import Container from '../components/Container';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 import IntroductionWrapper from '../components/index/IntroductionWrapper/IntroductionWrapper';
 
@@ -22,6 +23,9 @@ export default function DashboardLayout({ children }) {
             {children}
           </Container>
         </div>
+        <Container>          
+          <Footer />
+        </Container>
       </MenuLayoutStyle>
     )
   }
