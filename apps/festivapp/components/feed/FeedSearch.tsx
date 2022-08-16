@@ -18,8 +18,8 @@ const StyledPage = styled.div`
     width: 100%;
     padding: 10px;
     border-radius: 8px;
-    height: auto;
-    overflow: scroll;
+    max-height: 150px;
+    overflow: auto;
     background-color: ${globalColors.white};
     display: flex;
     flex-direction: column;
