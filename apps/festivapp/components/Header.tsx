@@ -190,7 +190,7 @@ export default function Header() {
           <div className="header__container">
             <Link href="/">
               <a onClick={() => setMobileOpen(false)}>
-                <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/f/fd/Festival_de_Cannes_Logo.svg/2560px-Festival_de_Cannes_Logo.svg.png" alt="Festivapp" />
+                <img src="/icon-192x192.png" alt="Festivapp" />
               </a>
             </Link>
             <nav>
