@@ -14,8 +14,7 @@ import Head from 'next/head';
 import { getLayout } from '../layouts/MenuLayout';
 
 const StyledPage = styled.main`
-  main {
-    height: calc(100vh - 200px);
+  & > div {
     display: flex;
     gap: 5rem;
     margin-bottom: 1rem;
@@ -148,7 +147,7 @@ export default function Signin() {
         <title>Festivapp - Inscription</title>
       </Head>
       <StyledPage>
-          <main>
+          <div>
             <div>
               <div>
                 <h1>Inscription à Festivapp</h1>
@@ -217,7 +216,7 @@ export default function Signin() {
                 alt="Login img"
               ></img>
             </aside>
-          </main>
+          </div>
       </StyledPage>
     </>
   );
